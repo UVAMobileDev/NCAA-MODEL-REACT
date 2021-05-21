@@ -2,7 +2,7 @@
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/UVAMobileDev/NCAA-MODEL-REACT.git):
+Download the example
 
 ```sh
 git clone https://github.com/UVAMobileDev/NCAA-MODEL-REACT.git
