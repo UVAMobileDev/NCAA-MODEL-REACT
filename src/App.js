@@ -8,6 +8,7 @@ import Dashboard from './dashboard/Dashboard';
 import UpcomingGames from './dashboard/UpcomingGames';
 import AllGames from './dashboard/AllGames';
 import Totals from './dashboard/Totals';
+import About from './dashboard/About';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 
 function Copyright() {
@@ -31,6 +32,7 @@ export default function App() {
       <Route path='/UpcomingGames' component={UpcomingGames}/>
       <Route path='/AllGames' component={AllGames}/>
       <Route path='/Totals' component={Totals}/>
+      <Route path='/About' component={About}/>
     </Switch>
     </BrowserRouter>
   );
