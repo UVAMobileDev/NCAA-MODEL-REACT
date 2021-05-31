@@ -64,8 +64,7 @@ export default function Games() {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      {isLoaded ? <DataGrid rows={rowData} columns={columns} getRowId ={(rowData) => rowData.home} autoHeight={true} /> :
-      <CircularProgress />}
+      
       
     </div>
   );
