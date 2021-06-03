@@ -20,6 +20,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Copyright from "./Copyright";
 import Title from "./Title";
+import TextWall from "./TestTextWall.js";
 
 const drawerWidth = 240;
 
@@ -173,7 +174,7 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Title>About this site</Title>
-                text text text blah blah blah
+                <TextWall/>
               </Paper>
             </Grid>
           </Grid>

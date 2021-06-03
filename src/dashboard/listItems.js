@@ -8,7 +8,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import InfoIcon from "@material-ui/icons/Info";
-import LayersIcon from "@material-ui/icons/Layers";
+import AdbIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { Link } from "react-router-dom";
 
@@ -52,6 +52,14 @@ export const mainListItems = (
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Totals" />
+      </ListItem>
+    </Link>
+    <Link to="/Test" style={{ textDecoration: "none" }}>
+      <ListItem button>
+        <ListItemIcon>
+          <AdbIcon />
+        </ListItemIcon>
+        <ListItemText primary="Test" />
       </ListItem>
     </Link>
   </div>
