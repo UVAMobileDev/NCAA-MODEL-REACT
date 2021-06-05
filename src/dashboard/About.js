@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Copyright from "./Copyright";
 import Title from "./Title";
 import TextWall from "./TestTextWall.js";
+import PastGames from "./PastGames.js";
 
 const drawerWidth = 240;
 
@@ -174,7 +175,8 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Title>About this site</Title>
-                <TextWall/>
+                {/* <TextWall/> */}
+                <PastGames/>
               </Paper>
             </Grid>
           </Grid>
