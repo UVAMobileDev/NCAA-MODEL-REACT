@@ -37,18 +37,22 @@ export default function PastGames(props) {
     const classes = useStyles();
     const [textInput, setTextInput] = React.useState('');
     const [apiUrl, setApiUrl] = React.useState("http://3.84.121.75:8080/schedule/GamesByDate/2021-01-01");
+    const [gameRows, setGameRows] = React.useState([
+        {home: "Home 1", away: "Away 1", score: "3-3"},
+        {home: "Home 2", away: "Away 2", score: "0-0"},
+        {home: "Home 3", away: "Away 3", score: "2-0"},
+    ]);
 
-    const columns = [
+    var columns = [
         {field: 'home', headerName: 'Home', width: 175},
         {field: 'away', headerName: 'Away', width: 175},
         {field: 'score', headerName: 'Score', width: 135},
-    ]
+    ];
 
-    const rows = [
-        {id: 1, home: "Home 1", away: "Away 1", score: "3-3"},
-        {id: 2, home: "Home 2", away: "Away 2", score: "0-0"},
-        {id: 3, home: "Home 3", away: "Away 3", score: "2-0"},
-    ]
+    var homeTeams = [];
+    var awayTeams = [];
+
+    var finalRows = [];
 
     function handleClick() {
         const dates = textInput.split('-'); 
@@ -56,6 +60,14 @@ export default function PastGames(props) {
         const year = dates[0];
         const month = dates[1];
         const day = dates[2];
+
+        for (var i = 0; i < homeTeams.length; i++) {
+            finalRows.push({id: i, home: homeTeams[i], away: awayTeams[i], score: "0-0"});
+        }
+
+        console.log(finalRows);
+
+        setGameRows(finalRows);
 
         setApiUrl("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
     }
@@ -66,10 +78,12 @@ export default function PastGames(props) {
           .then((response) => response.data)
           .then((data) => {
             const home = data.data.map(o => o.home);
+            const away = data.data.map(o => o.away);
             home.forEach(element => {
-                if (element == 'Cincinnati') {
-                    console.log("Cincinatti at home found!")
-                }                
+                homeTeams.push(element);
+            });
+            away.forEach(element => {
+                awayTeams.push(element);
             });
           });
       }, [apiUrl]);
@@ -81,8 +95,9 @@ export default function PastGames(props) {
             <DataGrid 
                 autoHeight = {true}
                 className = {classes.dataGrid} 
-                rows = {rows} 
+                rows = {gameRows} 
                 columns = {columns} 
+                getRowId ={(gameRows) => gameRows.home}
             />
             <Button className = {classes.button} onClick = {handleClick} variant = "contained" color = "default">Generate Table</Button>
         </div>
