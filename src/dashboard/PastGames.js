@@ -3,6 +3,10 @@ import TextField from '@material-ui/core/TextField'
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles, Button } from '@material-ui/core';
 import axios from 'axios';
+// import Calendar from 'react-calendar'
+// import 'react-calendar/dist/Calendar.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -35,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PastGames(props) {
     const classes = useStyles();
+
+    const [startDate, setStartDate] = React.useState(new Date());
     const [textInput, setTextInput] = React.useState('');
     const [apiUrl, setApiUrl] = React.useState("http://3.84.121.75:8080/schedule/GamesByDate/2021-01-01");
     const [gameRows, setGameRows] = React.useState([
@@ -49,13 +55,30 @@ export default function PastGames(props) {
         {field: 'score', headerName: 'Score', width: 135},
     ];
 
+    const months = {
+        Jan: "01",
+        Feb: "02",
+        Mar: "03",
+        Apr: "04",
+        May: "05",
+        Jun: "06",
+        Jul: "07",
+        Aug: "08",
+        Sep: "09",
+        Oct: "10",
+        Nov: "11",
+        Dec: "12"
+      };
+
     var homeTeams = [];
     var awayTeams = [];
 
     var finalRows = [];
 
     function handleClick() {
-        const dates = textInput.split('-'); 
+        // const dates = textInput.split('-'); 
+
+        const dates = convertDate(startDate.toString()).split('-');
 
         const year = dates[0];
         const month = dates[1];
@@ -70,6 +93,11 @@ export default function PastGames(props) {
         setGameRows(finalRows);
 
         setApiUrl("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
+    }
+
+    function convertDate(date) {
+        const dateParts = date.split(" ");
+        return dateParts[3] + "-" + months[dateParts[1]] + "-" + dateParts[2];
     }
 
     React.useEffect(() => {
@@ -90,14 +118,15 @@ export default function PastGames(props) {
 
     return (
         <div className = {classes.container}>
-            <TextField className = {classes.dateField} onChange = {e => setTextInput(e.target.value)}/>
-            <i className = {classes.instructionField} >Type the desired date in this format (minus quotations): "2021-02-26".</i>
             <DataGrid 
                 autoHeight = {true}
                 className = {classes.dataGrid} 
                 rows = {gameRows} 
                 columns = {columns} 
                 getRowId ={(gameRows) => gameRows.home}
+            />
+            <DatePicker 
+                selected = {startDate} onChange = {(date) => setStartDate(date)} dateFormat = "yyyy-MM-dd"
             />
             <Button className = {classes.button} onClick = {handleClick} variant = "contained" color = "default">Generate Table</Button>
         </div>
