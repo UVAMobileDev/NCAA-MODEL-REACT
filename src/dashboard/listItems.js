@@ -54,14 +54,6 @@ export const mainListItems = (
         <ListItemText primary="Totals" />
       </ListItem>
     </Link>
-    <Link to="/Test" style={{ textDecoration: "none" }}>
-      <ListItem button>
-        <ListItemIcon>
-          <AdbIcon />
-        </ListItemIcon>
-        <ListItemText primary="Test" />
-      </ListItem>
-    </Link>
   </div>
 );
 

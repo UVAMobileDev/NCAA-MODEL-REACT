@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PastGames(props) {
+export default function PastGamesGenerator(props) {
     const classes = useStyles();
 
     const [startDate, setStartDate] = React.useState(new Date());
