@@ -3,8 +3,6 @@ import TextField from '@material-ui/core/TextField'
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles, Button } from '@material-ui/core';
 import axios from 'axios';
-// import Calendar from 'react-calendar'
-// import 'react-calendar/dist/Calendar.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -41,13 +39,8 @@ export default function PastGames(props) {
     const classes = useStyles();
 
     const [startDate, setStartDate] = React.useState(new Date());
-    const [textInput, setTextInput] = React.useState('');
     const [apiUrl, setApiUrl] = React.useState("http://3.84.121.75:8080/schedule/GamesByDate/2021-01-01");
-    const [gameRows, setGameRows] = React.useState([
-        {home: "Home 1", away: "Away 1", score: "3-3"},
-        {home: "Home 2", away: "Away 2", score: "0-0"},
-        {home: "Home 3", away: "Away 3", score: "2-0"},
-    ]);
+    const [gameRows, setGameRows] = React.useState([]);
 
     var columns = [
         {field: 'home', headerName: 'Home', width: 175},
@@ -76,23 +69,15 @@ export default function PastGames(props) {
     var finalRows = [];
 
     function handleClick() {
-        // const dates = textInput.split('-'); 
-
         const dates = convertDate(startDate.toString()).split('-');
 
         const year = dates[0];
         const month = dates[1];
         const day = dates[2];
 
-        for (var i = 0; i < homeTeams.length; i++) {
-            finalRows.push({id: i, home: homeTeams[i], away: awayTeams[i], score: "0-0"});
+        if (!(apiUrl === ("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
+            setApiUrl("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
         }
-
-        console.log(finalRows);
-
-        setGameRows(finalRows);
-
-        setApiUrl("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
     }
 
     function convertDate(date) {
@@ -113,11 +98,18 @@ export default function PastGames(props) {
             away.forEach(element => {
                 awayTeams.push(element);
             });
+
+            for (var i = 0; i < homeTeams.length; i++) {
+                finalRows.push({id: i, home: homeTeams[i], away: awayTeams[i], score: "0-0"});
+            }
+
+            setGameRows(finalRows);
           });
       }, [apiUrl]);
 
     return (
         <div className = {classes.container}>
+            <i className = {classes.instructionField}> Click the "Generate Table" button twice.</i>
             <DataGrid 
                 autoHeight = {true}
                 className = {classes.dataGrid} 
@@ -126,7 +118,9 @@ export default function PastGames(props) {
                 getRowId ={(gameRows) => gameRows.home}
             />
             <DatePicker 
-                selected = {startDate} onChange = {(date) => setStartDate(date)} dateFormat = "yyyy-MM-dd"
+                selected = {startDate} 
+                onChange = {(date) => {setStartDate(date)}}
+                dateFormat = "yyyy-MM-dd"
             />
             <Button className = {classes.button} onClick = {handleClick} variant = "contained" color = "default">Generate Table</Button>
         </div>
