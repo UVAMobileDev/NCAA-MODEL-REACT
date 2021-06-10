@@ -10,6 +10,7 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import InfoIcon from "@material-ui/icons/Info";
 import AdbIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -52,6 +53,14 @@ export const mainListItems = (
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Totals" />
+      </ListItem>
+    </Link>
+    <Link to="/PastGames" style={{ textDecoration: "none" }}>
+      <ListItem button>
+        <ListItemIcon>
+          <ArrowBackIcon />
+        </ListItemIcon>
+        <ListItemText primary="Past Games" />
       </ListItem>
     </Link>
   </div>

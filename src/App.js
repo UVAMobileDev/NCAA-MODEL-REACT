@@ -5,6 +5,7 @@ import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
 import ProTip from "./ProTip";
 import Dashboard from "./dashboard/Dashboard";
+import PastGames from "./dashboard/PastGames";
 import UpcomingGames from "./dashboard/UpcomingGames";
 import AllGames from "./dashboard/AllGames";
 import Totals from "./dashboard/Totals";
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/UpcomingGames" component={UpcomingGames} />
         <Route path="/AllGames" component={AllGames} />
         <Route path="/Totals" component={Totals} />
+        <Route path="/PastGames" component={PastGames} />
       </Switch>
     </BrowserRouter>
   );
