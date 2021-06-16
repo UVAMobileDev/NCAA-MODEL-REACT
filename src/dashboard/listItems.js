@@ -9,8 +9,10 @@ import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import InfoIcon from "@material-ui/icons/Info";
 import LayersIcon from "@material-ui/icons/Layers";
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { Link } from "react-router-dom";
+import ListIcon from '@material-ui/icons/List';
 
 export const mainListItems = (
   <div>
@@ -52,6 +54,14 @@ export const mainListItems = (
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Totals" />
+      </ListItem>
+    </Link>
+    <Link to="/TeamList" style={{ textDecoration: "none" }}>
+      <ListItem button>
+        <ListItemIcon>
+          <ListIcon />
+        </ListItemIcon>
+        <ListItemText primary="Team List" />
       </ListItem>
     </Link>
   </div>
