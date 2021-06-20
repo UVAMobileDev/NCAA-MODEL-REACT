@@ -6,6 +6,8 @@ async function scrapeProduct(url) {
 
     let teamNames = [];
 
+    let teamData = [];
+
     await axios
         .get(apiUrl)
         .then((response) => response.data)
@@ -21,7 +23,7 @@ async function scrapeProduct(url) {
     await page.setDefaultNavigationTimeout(0);
     await page.goto(url);
 
-    for (i = 1; i < 75; i++) { 
+    for (i = 1; i < 47; i++) { 
         var xPathImg = '//*[@id="team"]/ul/li[' + i + ']/a/img';
         var xPathText = '//*[@id="team"]/ul/li[' + i + ']/a';
 
@@ -33,14 +35,32 @@ async function scrapeProduct(url) {
         var text = await Team.getProperty('textContent');
 
         var name = await text.jsonValue();
-        name = await name.trim();        
+        name = await name.trim();  
 
-        console.log({srcTxt, name});
+        // teamData.push({srcTxt , name});
+
+        teamData.push({srcTxt, name});
     }
 
-    // console.log(teamNames.length);
+    console.log(teamData); //jQuery
 
     browser.close();
 }
 
-scrapeProduct('https://www.sportslogos.net/teams/list_by_league/30/NCAA_Division_I_a-c/NCAA_a-c/logos/');
+// function funScrape() {
+//     axios
+//         .get("./LogoList.json")
+//         .then((response) => response.data)
+//         .then((data) => {
+//             const txt = data.data.map(o => o.srcTxt);
+//             txt.forEach(element => {
+//                 console.log(element);
+//             });
+//     });
+
+//     console.log('Test');
+// }
+
+scrapeProduct('https://www.sportslogos.net/teams/list_by_league/35/NCAA_Division_I_u-z/NCAA_u-z/logos/');
+
+// funScrape();
