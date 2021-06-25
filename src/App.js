@@ -10,6 +10,7 @@ import AllGames from "./dashboard/AllGames";
 import Totals from "./dashboard/Totals";
 import About from "./dashboard/About";
 import TeamList from "./dashboard/TeamList";
+import TeamInfo from "./dashboard/TeamInfo";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 export default function App() {
@@ -21,7 +22,8 @@ export default function App() {
         <Route path="/UpcomingGames" component={UpcomingGames} />
         <Route path="/AllGames" component={AllGames} />
         <Route path="/Totals" component={Totals} />
-        <Route path="/TeamList" component={TeamList} />
+        <Route exact path="/Teams" component={TeamList} />
+        <Route exact path="/Teams/:TeamName" component={TeamInfo} />
       </Switch>
     </BrowserRouter>
   );

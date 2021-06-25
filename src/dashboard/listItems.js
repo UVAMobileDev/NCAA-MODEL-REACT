@@ -56,12 +56,12 @@ export const mainListItems = (
         <ListItemText primary="Totals" />
       </ListItem>
     </Link>
-    <Link to="/TeamList" style={{ textDecoration: "none" }}>
+    <Link to="/Teams" style={{ textDecoration: "none" }}>
       <ListItem button>
         <ListItemIcon>
           <ListIcon />
         </ListItemIcon>
-        <ListItemText primary="Team List" />
+        <ListItemText primary="Teams" />
       </ListItem>
     </Link>
   </div>

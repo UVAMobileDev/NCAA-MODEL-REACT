@@ -46,7 +46,7 @@ export default function BarChartGames() {
   }, []);
   return (
     <React.Fragment>
-      <Title>Total Game Values To Date</Title>
+      <Title>Total  To Date</Title>
       <ResponsiveContainer >
       {isLoaded ? <BarChart
           data={tableData}

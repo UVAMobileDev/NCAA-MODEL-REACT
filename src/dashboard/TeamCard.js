@@ -5,10 +5,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React from 'react';
+import Button from '@material-ui/core/Button';
 import { red } from '@material-ui/core/colors';
 import Collapse from '@material-ui/core/Collapse';
 import axios from 'axios';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,6 +41,8 @@ export default function TeamCard( {cardInfo} ) {
     const [expanded, setExpanded] = React.useState(false);
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [teamData, setTeamData] = React.useState({});
+    const history = useHistory();
+    
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -71,38 +75,39 @@ export default function TeamCard( {cardInfo} ) {
     
     return  (
         <Card elevation={3}>
-        <CardActionArea onClick={handleExpandClick}>
-            <CardActions disableSpacing>
-                {/* <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton> */}
-                <CardHeader
-                title={cardInfo.team_name}
-                subheader={cardInfo.abbr.three_letter+"/"+cardInfo.abbr.four_letter}
-            />
-                <IconButton
-                    className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                    })}
-                    // onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-                <Typography paragraph>Rank: {teamData.ranking}</Typography>
-                <Typography paragraph>Wins: {teamData.wins}</Typography>
-                <Typography paragraph>Losses: {teamData.losses}</Typography>
-            </CardContent>
-      </Collapse>
-
-        </CardActionArea>
-            
-            
-            
+            {/* <CardActionArea > */}
+                <CardActions disableSpacing>
+                    {/* <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </IconButton> */}
+                    <CardHeader
+                    title={cardInfo.team_name}
+                    subheader={cardInfo.abbr.three_letter+"/"+cardInfo.abbr.four_letter}
+                    />
+                    <IconButton
+                        className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                        })}
+                        
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <Typography paragraph>Rank: {teamData.ranking}</Typography>
+                        <Typography paragraph>Wins: {teamData.wins}</Typography>
+                        <Typography paragraph>Losses: {teamData.losses}</Typography>
+                        <Button onClick={() => history.push(`Teams/${cardInfo.team_name}`)}
+                            size="small" color="primary">
+                            Learn More
+                        </Button>
+                    </CardContent>
+                </Collapse>
+            {/* </CardActionArea> */}
         </Card>
 
     )
