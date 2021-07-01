@@ -108,7 +108,7 @@ export default function PastGamesGenerator(props) {
 
     return (
         <div className = {classes.container}>
-            <i className = {classes.instructionField}> Click the "Generate Table" button twice.</i>
+            <i className = {classes.instructionField}>Games present from February 26th, 2021 and onwards.</i>
             <DataGrid 
                 autoHeight = {true}
                 className = {classes.dataGrid} 

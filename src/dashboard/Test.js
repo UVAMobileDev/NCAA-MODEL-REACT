@@ -5,21 +5,28 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Line} from 'react-chartjs-2';
 
-/* 
-    1. Get specific values/spreads from a certain day and store it in an array.
-    2. Update the chart with these specific spreads/values as plot points.
-        2a. Make the labels at the bottom the same as the match-ups.
-        2b. Make the labels at the side a range of numbers that fits the spreads/values.
-        2c. Add a key to differentiate!
-*/
+export function ComparatorModel() {
+    const months = {
+        Jan: "01",
+        Feb: "02",
+        Mar: "03",
+        Apr: "04",
+        May: "05",
+        Jun: "06",
+        Jul: "07",
+        Aug: "08",
+        Sep: "09",
+        Oct: "10",
+        Nov: "11",
+        Dec: "12"
+    };
 
-export function Test() {
     const [startDate, setStartDate] = React.useState(new Date());
     const [label, setLabel] = React.useState([]);
     const [modelValues, setModelValues] = React.useState([]);
     const [vegasValues, setVegasValues] = React.useState([]);
+    const [apiUrl, setApiUrl] = React.useState('http://35.153.97.187:8080/schedule/GamesByDate/2021-02-26');
 
-    var apiUrl = "http://localhost:8080/schedule/GamesByDate/2021-02-26";
     var spreadList = [];
     var valueList = [];
 
@@ -33,7 +40,7 @@ export function Test() {
                 label: 'Model',
                 fill: false,
                 lineTension: 0.5,
-                backgroundColor: 'rgb(216,61,61)',
+                backgroundColor: 'rgb(255,0,0)',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
                 data: modelValues,
@@ -42,7 +49,7 @@ export function Test() {
                 label: 'Vegas',
                 fill: false,
                 lineTension: 0.5,
-                backgroundColor: 'rgb(61,93,216)',
+                backgroundColor: 'rgb(0,88,255)',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
                 data: vegasValues,
@@ -84,32 +91,41 @@ export function Test() {
             setVegasValues(spreadList);
 
           });
-      }, []);
+      }, [apiUrl]);
 
-    function onClick() {
-        console.log(state.labels);
+    function handleClick() {
+        const dates = convertDate(startDate.toString()).split('-');
+
+        const year = dates[0];
+        const month = dates[1];
+        const day = dates[2];
+
+        if (!(apiUrl === ("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
+            setApiUrl("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
+        }
     }
 
-    function onChange() {
-
+    function convertDate(date) {
+        const dateParts = date.split(" ");
+        return dateParts[3] + "-" + months[dateParts[1]] + "-" + dateParts[2];
     }
 
     return (
         <div>
-            <Button onClick={onClick}>Cool button.</Button>
+            <Button onClick={handleClick} variant = "contained" color = "default">Generate Chart</Button>
             <DatePicker 
                 selected = {startDate} 
                 onChange = {(date) => {setStartDate(date)}}
                 dateFormat = "yyyy-MM-dd"
             />
             <Line
-                onChange = {onChange}
                 data={state}
+                fontSize = {15}
+                width={1200}
+	            height={600}
                 options={{
-                    legend:{
-                        display:true,
-                        position:'right'
-                    }
+                    maintainAspectRatio: false,
+                    responsive: false,
                 }}
             />
         </div>

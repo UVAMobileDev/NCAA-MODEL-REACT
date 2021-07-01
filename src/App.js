@@ -11,7 +11,7 @@ import AllGames from "./dashboard/AllGames";
 import Totals from "./dashboard/Totals";
 import About from "./dashboard/About";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
-import { Test } from "./dashboard/Test";
+import { Test, ComparatorModel } from "./dashboard/Test";
 
 export default function App() {
   return (
@@ -23,7 +23,7 @@ export default function App() {
         <Route path="/AllGames" component={AllGames} />
         <Route path="/Totals" component={Totals} />
         <Route path="/PastGames" component={PastGames} />
-        <Route path="/Test" component={Test} />
+        <Route path="/Test" component={ComparatorModel} />
       </Switch>
     </BrowserRouter>
   );
