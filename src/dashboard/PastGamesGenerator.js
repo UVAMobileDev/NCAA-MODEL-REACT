@@ -38,7 +38,7 @@ export default function PastGamesGenerator(props) {
     const classes = useStyles();
 
     const [startDate, setStartDate] = React.useState(new Date());
-    const [apiUrl, setApiUrl] = React.useState("http://3.84.121.75:8080/schedule/GamesByDate/2021-01-01");
+    const [apiUrl, setApiUrl] = React.useState("http://35.153.97.187:8080/schedule/GamesByDate/2021-01-01");
     const [gameRows, setGameRows] = React.useState([]);
 
     var columns = [
@@ -74,8 +74,8 @@ export default function PastGamesGenerator(props) {
         const month = dates[1];
         const day = dates[2];
 
-        if (!(apiUrl === ("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
-            setApiUrl("http://3.84.121.75:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
+        if (!(apiUrl === ("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
+            setApiUrl("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
         }
     }
 

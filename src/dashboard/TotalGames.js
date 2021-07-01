@@ -12,7 +12,7 @@ export default function BarChartGames() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [tableData, setTableData] = React.useState([]);
   React.useEffect(() => {
-    var apiurl = "http://3.84.121.75:8080/schedule/Games/";
+    var apiurl = "http://35.153.97.187:8080/schedule/Games/";
     axios
       .get(apiurl)
       .then((response) => response.data)

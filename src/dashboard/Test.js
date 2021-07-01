@@ -15,6 +15,9 @@ import {Line} from 'react-chartjs-2';
 
 export function Test() {
     const [startDate, setStartDate] = React.useState(new Date());
+    const [label, setLabel] = React.useState([]);
+    const [modelValues, setModelValues] = React.useState([]);
+    const [vegasValues, setVegasValues] = React.useState([]);
 
     var apiUrl = "http://localhost:8080/schedule/GamesByDate/2021-02-26";
     var spreadList = [];
@@ -24,7 +27,7 @@ export function Test() {
     var awayTeams = [];
 
     var state = {
-        labels: [],
+        labels: label,
         datasets: [
             {
                 label: 'Model',
@@ -33,7 +36,16 @@ export function Test() {
                 backgroundColor: 'rgb(216,61,61)',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
-                data: [11, 59, 80, 81, 59, 21, 32]
+                data: modelValues,
+            },
+            {
+                label: 'Vegas',
+                fill: false,
+                lineTension: 0.5,
+                backgroundColor: 'rgb(61,93,216)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: vegasValues,
             }
         ]
     }  
@@ -61,15 +73,25 @@ export function Test() {
                 awayTeams.push(element);
             });
 
+            let labelTemp = [];
+
             for (let i = 0; i < homeTeams.length; i++) {
-                state.labels.push(homeTeams[i] + " - " + awayTeams[i]);
+                labelTemp.push(homeTeams[i] + " - " + awayTeams[i]);
             }
+        
+            setLabel(labelTemp);
+            setModelValues(valueList);
+            setVegasValues(spreadList);
 
           });
       }, []);
 
     function onClick() {
         console.log(state.labels);
+    }
+
+    function onChange() {
+
     }
 
     return (
@@ -81,13 +103,9 @@ export function Test() {
                 dateFormat = "yyyy-MM-dd"
             />
             <Line
+                onChange = {onChange}
                 data={state}
                 options={{
-                    title:{
-                        display:true,
-                        text:'Average Rainfall per month',
-                        fontSize:20
-                    },
                     legend:{
                         display:true,
                         position:'right'

@@ -2,7 +2,7 @@ const axios = require('axios');
 const puppeteer = require('puppeteer');
 
 async function scrapeProduct(url) {
-    const apiUrl = 'http://3.84.121.75:8080/teams';
+    const apiUrl = 'http://35.153.97.187:8080/teams';
 
     let teamNames = [];
 
