@@ -31,7 +31,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
-
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -194,7 +194,7 @@ export default function TeamList() {
   // });
 
   //For Team Selector
-  const [apiurl, setApiUrl] = React.useState("http://3.84.121.75:8080/teams/Virginia")
+  const [apiurl, setApiUrl] = React.useState("http://35.153.97.187:8080/teams/Virginia")
 
 
   const [state, setState] = React.useState("Virginia");
@@ -204,7 +204,7 @@ export default function TeamList() {
   const handleChange = (event) => {
     // console.log("What is change word: "+event.target.value)
     setAge(event.target.value);
-    setApiUrl("http://3.84.121.75:8080/teams/" + event.target.value);
+    setApiUrl("http://35.153.97.187:8080/teams/" + event.target.value);
 
   };
   const [filter, setFilter] = React.useState("");
@@ -227,7 +227,7 @@ export default function TeamList() {
     });
     // setTeam(event.target.name);
 
-    setApiUrl("http://3.84.121.75:8080/teams/" + team);
+    setApiUrl("http://35.153.97.187:8080/teams/" + team);
 
   };
   React.useEffect(() => {
@@ -241,7 +241,7 @@ export default function TeamList() {
         setTeamInfo(data.data[0]);
       });
     
-    var teamapiurl = "http://3.84.121.75:8080/teams/";
+    var teamapiurl = "http://35.153.97.187:8080/teams/";
     axios
       .get(teamapiurl)
       .then((response) => response.data)

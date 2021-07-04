@@ -11,6 +11,11 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Image from 'material-ui-image';
+import CardActionArea from '@material-ui/core/CardActionArea';
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 
 import Divider from "@material-ui/core/Divider";
 import CardMedia from '@material-ui/core/CardMedia';
@@ -30,6 +35,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
     useParams
   } from "react-router-dom";
@@ -122,6 +130,20 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  heading: {
+    fontSize: theme.typography.pxToRem(20),
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondHeading: {
+    fontSize: theme.typography.pxToRem(20),
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(25),
+    color: theme.palette.text.secondary,
+  },
 }));
 
 export default function TeamInfo() {
@@ -142,9 +164,15 @@ export default function TeamInfo() {
     }
     )
   }
-
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const [teamLogo, setTeamLogo] = React.useState('');
+  const [expanded, setExpanded] = React.useState(false);
 
   const [isLoaded,setIsLoaded] = React.useState('false');
   const [teamData,setTeamData] = React.useState({});
@@ -152,10 +180,11 @@ export default function TeamInfo() {
   let { TeamName } = useParams();
 
   var teamapiurl = "http://localhost:8080/schedule/Games/"+TeamName;
+  var date = "";
 
     React.useEffect(() => {
         // axios
-        // .get("http://3.84.121.75:8080/schedule/games")
+        // .get("http://35.153.97.187:8080/schedule/games")
         // .then((response) => response.data)
         // .then((data) => {
         //     setGames(data.data)
@@ -239,9 +268,9 @@ export default function TeamInfo() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Grid item xs={10}>
+        
 
-            <Card>
+            <Card> 
                 <CardHeader
                     title={teamData.school}
                     />
@@ -253,18 +282,78 @@ export default function TeamInfo() {
                     disableSpinner
                 /> */}
                 <CardMedia
-                    className={classes.media}
-                    image={teamLogo}
-                    title="Paella dish"
-                />
+                    // className={classes.media}
+                    // height="140"
+                    // image={teamLogo}
+                    // title="Paella dish"
+                    
+                >
+                    <img src={teamLogo}/>
+                </CardMedia>
                 <CardContent>
                     <Typography paragraph>Rank: {teamData.ranking}</Typography>
                     <Typography paragraph>Wins: {teamData.wins}</Typography>
-                    <Typography paragraph>Losses: {teamData.losses}</Typography>
+                    <Typography  paragraph>Losses: {teamData.losses}</Typography>
                     <Button size="small" color="primary">
                         Learn More
                     </Button>
                 </CardContent>
+                <Accordion expanded={expanded === "example"} onChange={handleChange("example")}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
+                >
+                  <Typography className={classes.heading} style={{color:"#00adb5" }}>Picked Team Color</Typography>
+                  <Typography className={classes.secondaryHeading}>Score</Typography>
+                  <Typography align="right" className={classes.secondHeading} style={{color:"#000000"}}>Other Team</Typography>
+                </AccordionSummary>
+                  
+                <AccordionDetails>
+                <Typography>
+                  Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+                  maximus est, id dignissim quam.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            {games.map(match => (
+              <Accordion expanded={expanded === match.time} onChange={handleChange(match.time)}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
+                >
+                  <Avatar alt="Home Team" variant="rounded" src={match.homelogo} className={classes.medium} />
+                  <Typography className={classes.heading} style={{color:match.home == match.pick ? "#00adb5" :"#000000"}}>{match.home}</Typography>
+                  <Typography className={classes.secondaryHeading}>{match.homescore} vs {match.awayscore}</Typography>
+                  <Typography align="right" className={classes.secondHeading} style={{color: match.away == match.pick ? "#00adb5" :"#000000"}}>{match.away}</Typography>
+                  <Avatar alt="Away Team" variant="rounded" src={match.awaylogo} className={classes.medium} />
+                </AccordionSummary>
+                <AccordionDetails align="center">
+                  <div>
+                    <Typography>Date: {date = new Date(match.time),
+                    date.getDate()+
+                      "/"+(date.getMonth()+1)+
+                      "/"+date.getFullYear()+
+                      " "+date.getHours()+
+                      ":"+date.getMinutes()+
+                      ":"+date.getSeconds()}
+                    </Typography>
+                  </div>
+                  <div align="center">
+                    <Typography>Spread: {match.spread}</Typography>
+                    <Typography>Actual Score: {match.finalresult}</Typography>
+                  </div>
+
+                  <div align="center">
+                    <Typography>Value: {match.value}</Typography>
+                    <Typography>Level: {match.level}</Typography>
+                  </div>
+                  
+                </AccordionDetails>
+              </Accordion>
+                ))
+            }
                 <TableContainer component={Paper}>
                     <Table className={classes.table} size="small" aria-label="a dense table">
                         <TableHead>
@@ -296,7 +385,7 @@ export default function TeamInfo() {
                     </Table>
                 </TableContainer>
             </Card>
-        </Grid> 
+        
             <Container maxWidth="lg" className={classes.container}>
             <Box pt={4}>
                 <Copyright />

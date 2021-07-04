@@ -48,7 +48,7 @@ export default function TeamCard( {cardInfo} ) {
         setExpanded(!expanded);
         getTeamInfo();
     };
-    var teamapiurl = "http://3.84.121.75:8080/teams/" + cardInfo.team_name;
+    var teamapiurl = "http://35.153.97.187:8080/teams/" + cardInfo.team_name;
     const getTeamInfo = () => {
         axios
         .get(teamapiurl)

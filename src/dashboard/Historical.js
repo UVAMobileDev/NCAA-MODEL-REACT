@@ -51,7 +51,7 @@ export default function Historical() {
   const [rowData, setRowData] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
   React.useEffect(() => {
-    var apiurl = "http://3.84.121.75:8080/schedule/Games/";
+    var apiurl = "http://35.153.97.187:8080/schedule/Games/";
     axios
       .get(apiurl)
       .then((response) => response.data)
