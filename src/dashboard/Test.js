@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Line} from 'react-chartjs-2';
 
-export function ComparatorModel() {
+export function ComparatorModel() { // Make it better to look at; over/under graph (scatterplot).
     const months = {
         Jan: "01",
         Feb: "02",
