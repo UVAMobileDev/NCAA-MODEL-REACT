@@ -179,7 +179,7 @@ export default function TeamInfo() {
   const [games, setGames] = React.useState([])
   let { TeamName } = useParams();
 
-  var teamapiurl = "http://localhost:8080/schedule/Games/"+TeamName;
+  var teamapiurl = "http://http://35.153.97.187:8080/schedule/TeamSchedule/"+TeamName;
   var date = "";
 
     React.useEffect(() => {
@@ -196,14 +196,14 @@ export default function TeamInfo() {
             setGames(data.data)
         });
         axios
-        .get('http://localhost:8080/teams')
+        .get('http://http://35.153.97.187:8080/teams')
         .then((response) => response.data)
         .then((data) => {
             getTeamLogo(data.data)
         });
         ;
         axios
-        .get('http://localhost:8080/teams/'+TeamName)
+        .get('http://35.153.97.187:8080/teams/'+TeamName)
         .then((response) => response.data)
         .then((data) => {
             setTeamData(data.data[0])
@@ -298,9 +298,9 @@ export default function TeamInfo() {
                         Learn More
                     </Button>
                 </CardContent>
-                <Accordion expanded={expanded === "example"} onChange={handleChange("example")}>
+                <Accordion>
                 <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
+
                   aria-controls="panel1bh-content"
                   id="panel1bh-header"
                 >
@@ -308,13 +308,6 @@ export default function TeamInfo() {
                   <Typography className={classes.secondaryHeading}>Score</Typography>
                   <Typography align="right" className={classes.secondHeading} style={{color:"#000000"}}>Other Team</Typography>
                 </AccordionSummary>
-                  
-                <AccordionDetails>
-                <Typography>
-                  Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-                  maximus est, id dignissim quam.
-                </Typography>
-              </AccordionDetails>
             </Accordion>
             {games.map(match => (
               <Accordion expanded={expanded === match.time} onChange={handleChange(match.time)}>
@@ -354,36 +347,6 @@ export default function TeamInfo() {
               </Accordion>
                 ))
             }
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} size="small" aria-label="a dense table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell> Home Team </TableCell>
-                            <TableCell> Away Team </TableCell>
-                            <TableCell align="right">Pick</TableCell>
-                            <TableCell align="right">Home</TableCell>
-                            <TableCell align="right">Away</TableCell>
-                            <TableCell align="right">Spread</TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {games.map((row) => (
-                            <TableRow key={row.name}>
-                            <TableCell component="th" scope="row">
-                                {row.home}
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {row.away}
-                            </TableCell>
-                            <TableCell align="right">{row.pick}</TableCell>
-                            <TableCell align="right">{row.homescore}</TableCell>
-                            <TableCell align="right">{row.awayscore}</TableCell>
-                            <TableCell align="right">{row.spread}</TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
             </Card>
         
             <Container maxWidth="lg" className={classes.container}>
