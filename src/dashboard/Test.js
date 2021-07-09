@@ -1,11 +1,54 @@
 import * as React from "react";
-import { Button } from '@material-ui/core';
+import {IconButton, Button} from '@material-ui/core';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Line} from 'react-chartjs-2';
+import {Line, Scatter} from 'react-chartjs-2';
+import {makeStyles} from '@material-ui/core';
+import {Card, CardContent} from '@material-ui/core';
+import {ChevronRight} from "@material-ui/icons";
 
-export function ComparatorModel() { // Make it better to look at; over/under graph (scatterplot).
+const useStyles = makeStyles((theme) => ({ 
+    containerOne: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    instructionField: {
+        order: 1,
+        marginTop: "5px",
+        fontSize: "10px",
+    },
+    pastGamesButton: {
+        order: 2,
+        marginTop: "5px",
+    },
+    pastGamesDateField: {
+        order: 3,
+        marginTop: "10px",
+    },
+    pastGamesGraph: {
+        order: 4,
+        marginTop: "5px",
+    },
+    card: {
+        maxWidth: 1400,
+        margin: "auto",
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: "#292423",
+        marginTop: "10px",
+    },
+    backAndForth: {
+        marginLeft: "1300px",
+        size: 'small',
+    }
+}));
+
+export function ComparatorModel() {
+    const classes = useStyles();
+
     const months = {
         Jan: "01",
         Feb: "02",
@@ -20,12 +63,17 @@ export function ComparatorModel() { // Make it better to look at; over/under gra
         Nov: "11",
         Dec: "12"
     };
+    
+    const [startDate, setStartDate] = React.useState(new Date('2021-02-27'));
+    const [apiUrl, setApiUrl] = React.useState('http://35.153.97.187:8080/schedule/GamesByDate/2021-02-26');
 
-    const [startDate, setStartDate] = React.useState(new Date());
-    const [label, setLabel] = React.useState([]);
+    // Graph #1:
+    const [pastGamesLabel, setPastGamesLabel] = React.useState([]);
     const [modelValues, setModelValues] = React.useState([]);
     const [vegasValues, setVegasValues] = React.useState([]);
-    const [apiUrl, setApiUrl] = React.useState('http://35.153.97.187:8080/schedule/GamesByDate/2021-02-26');
+    
+    // Graph #2:
+    const [valueSpreadLabel, setValueSpreadLabel] = React.useState([]);    
 
     var spreadList = [];
     var valueList = [];
@@ -33,29 +81,40 @@ export function ComparatorModel() { // Make it better to look at; over/under gra
     var homeTeams = [];
     var awayTeams = [];
 
-    var state = {
-        labels: label,
+    var pastGamesState = {
+        labels: pastGamesLabel,
         datasets: [
             {
                 label: 'Model',
-                fill: false,
-                lineTension: 0.5,
                 backgroundColor: 'rgb(255,0,0)',
                 borderColor: 'rgba(0,0,0,1)',
+                pointRadius: 5,
+                pointHoverRadius: 5,
                 borderWidth: 2,
+                pointStyle: 'rectRounded',
+                showLine: false,
                 data: modelValues,
             },
             {
                 label: 'Vegas',
-                fill: false,
-                lineTension: 0.5,
                 backgroundColor: 'rgb(0,88,255)',
                 borderColor: 'rgba(0,0,0,1)',
+                pointRadius: 5,
+                pointHoverRadius: 5,
                 borderWidth: 2,
+                pointStyle: 'rectRounded',
+                showLine: false,
                 data: vegasValues,
             }
         ]
     }  
+
+    var valueSpreadState = {
+        labels: valueSpreadLabel,
+        datasets: [
+            {},
+        ]
+    }
 
     React.useEffect(() => {
         axios
@@ -80,18 +139,41 @@ export function ComparatorModel() { // Make it better to look at; over/under gra
                 awayTeams.push(element);
             });
 
-            let labelTemp = [];
+            let pastGamesLabelTemp = [];
+            let valueSpreadTemp = [];
 
             for (let i = 0; i < homeTeams.length; i++) {
-                labelTemp.push(homeTeams[i] + " - " + awayTeams[i]);
+                pastGamesLabelTemp.push(homeTeams[i] + " - " + awayTeams[i]);
             }
-        
-            setLabel(labelTemp);
+ 
+            setPastGamesLabel(pastGamesLabelTemp);
             setModelValues(valueList);
             setVegasValues(spreadList);
 
+            setValueSpreadLabel(pastGamesLabelTemp);
+
+            let tempArray = new Array(pastGamesLabelTemp.length).fill({
+                label: null,
+                backgroundColor: null,
+                borderColor: 'rgba(0,0,0,1)',
+                pointRadius: 5,
+                pointHoverRadius: 5,
+                borderWidth: 2,
+                pointStyle: 'rectRounded',
+                showLine: false,
+                data: null,
+            });
+
+            console.log(tempArray);
+
+            for (let i = 0; i < pastGamesLabelTemp.length; i++) { // 2. Add the appropriate labels  to it.
+                tempArray[i].label = pastGamesLabelTemp[i];
+                tempArray[i].backgroundColor = 'rgb(' + random(0, 255) + ', ' + random(0, 255) + ', ' + random(0, 255) + ")";
+            }
+
+            console.log(tempArray);
           });
-      }, [apiUrl]);
+    }, [apiUrl]);
 
     function handleClick() {
         const dates = convertDate(startDate.toString()).split('-');
@@ -103,6 +185,20 @@ export function ComparatorModel() { // Make it better to look at; over/under gra
         if (!(apiUrl === ("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
             setApiUrl("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
         }
+
+        // console.log(pastGamesState.datasets[0].label); It Works.
+
+        // valueSpreadState.datasets = new Array(vegasValues.length).fill({
+        //     label: null,
+        //     backgroundColor: null,
+        //     borderColor: 'rgba(0,0,0,1)',
+        //     pointRadius: 5,
+        //     pointHoverRadius: 5,
+        //     borderWidth: 2,
+        //     pointStyle: 'rectRounded',
+        //     showLine: false,
+        //     data: null,
+        // });
     }
 
     function convertDate(date) {
@@ -110,24 +206,87 @@ export function ComparatorModel() { // Make it better to look at; over/under gra
         return dateParts[3] + "-" + months[dateParts[1]] + "-" + dateParts[2];
     }
 
+    const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
     return (
         <div>
-            <Button onClick={handleClick} variant = "contained" color = "default">Generate Chart</Button>
-            <DatePicker 
-                selected = {startDate} 
-                onChange = {(date) => {setStartDate(date)}}
-                dateFormat = "yyyy-MM-dd"
-            />
-            <Line
-                data={state}
-                fontSize = {15}
-                width={1200}
-	            height={600}
-                options={{
-                    maintainAspectRatio: false,
-                    responsive: false,
-                }}
-            />
+            <Card className={classes.card} variant = "outlined">
+                <CardContent>
+                    <div className = {classes.containerOne}>
+                        <i className = {classes.instructionField}>Games present from February 26th, 2021 and onwards.</i>
+                        <DatePicker 
+                            selected = {startDate} 
+                            onChange = {(date) => {setStartDate(date)}}
+                            dateFormat = "yyyy-MM-dd"
+                            className = {classes.pastGamesDateField}
+                        />
+                        <Line
+                            data = {pastGamesState}
+                            fontSize = {15}
+                            width = {1200}
+	                        height = {600}
+                            options = {{
+                                animation: false,
+                                maintainAspectRatio: false,
+                                responsive: false,
+                                legend: {
+                                    labels: {
+                                        fontColor: 'black'
+                                    }
+                                }
+                            }}
+                            className = {classes.pastGamesGraph}
+                        />
+                        <Button className = {classes.pastGamesButton} onClick={handleClick} variant = "contained" color = "default">Generate Chart</Button>
+                    </div>
+                    <IconButton className = {classes.backAndForth}>
+                        <ChevronRight/>
+                    </IconButton>
+                </CardContent>
+            </Card>
+            <Scatter data={data}/>
         </div>
     )
 }
+
+/* 
+    - X-axis: Value (Model)
+    - Y-axis: Spread (Vegas)
+    - Points: Individual match-days
+
+    a) Push value #'s into array and set it.
+    b) Push spread #'s into array and set it.
+    c) Push individual match-days into a points array and set it.
+
+    --> Somehow create a dataset for each match-day.
+*/
+
+
+// console.log(pastGamesState.datasets[i]);
+
+const rand = () => Math.round(Math.random() * 20 - 10);
+
+const data = {
+  datasets: [
+    {
+      label: 'A dataset',
+      data: [
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+        { x: rand(), y: rand() },
+      ],
+      backgroundColor: 'rgba(90, 99, 132, 1)',
+    },
+  ],
+};
