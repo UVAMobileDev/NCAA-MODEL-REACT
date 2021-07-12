@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
     backAndForth: {
         marginLeft: "1300px",
         size: 'small',
+    },
+    valueSpreadGraph: {
+        marginLeft: "200px",
+        marginBottom: "10px",
     }
 }));
 
@@ -74,6 +78,7 @@ export function ComparatorModel() {
     
     // Graph #2:
     const [valueSpreadLabel, setValueSpreadLabel] = React.useState([]);    
+    const [valueSpreadDatasets, setValueSpreadDatasets] = React.useState([]);
 
     var spreadList = [];
     var valueList = [];
@@ -111,12 +116,10 @@ export function ComparatorModel() {
 
     var valueSpreadState = {
         labels: valueSpreadLabel,
-        datasets: [
-            {},
-        ]
+        datasets: valueSpreadDatasets,
     }
 
-    React.useEffect(() => {
+    React.useEffect(() => { // https://stackoverflow.com/questions/65591286/react-chartjs-scatter-plot-cannot-plot-the-data
         axios
           .get(apiUrl)
           .then((response) => response.data)
@@ -140,7 +143,6 @@ export function ComparatorModel() {
             });
 
             let pastGamesLabelTemp = [];
-            let valueSpreadTemp = [];
 
             for (let i = 0; i < homeTeams.length; i++) {
                 pastGamesLabelTemp.push(homeTeams[i] + " - " + awayTeams[i]);
@@ -152,26 +154,40 @@ export function ComparatorModel() {
 
             setValueSpreadLabel(pastGamesLabelTemp);
 
-            let tempArray = new Array(pastGamesLabelTemp.length).fill({
-                label: null,
-                backgroundColor: null,
-                borderColor: 'rgba(0,0,0,1)',
-                pointRadius: 5,
-                pointHoverRadius: 5,
-                borderWidth: 2,
-                pointStyle: 'rectRounded',
-                showLine: false,
-                data: null,
-            });
+            let tempArray = [];
 
-            console.log(tempArray);
+            for (let j = 0; j < pastGamesLabel.length; j++) {
+                let tempPoint = {
+                    label: null,
+                    backgroundColor: null,
+                    borderColor: 'rgba(0,0,0,1)',
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                    borderWidth: 2,
+                    pointStyle: 'rectRounded',
+                    showLine: false,
+                    data: null,
+                }
 
-            for (let i = 0; i < pastGamesLabelTemp.length; i++) { // 2. Add the appropriate labels  to it.
-                tempArray[i].label = pastGamesLabelTemp[i];
-                tempArray[i].backgroundColor = 'rgb(' + random(0, 255) + ', ' + random(0, 255) + ', ' + random(0, 255) + ")";
+                var matchup = pastGamesLabel[j];
+
+                tempPoint.label = matchup;
+                tempPoint.backgroundColor = 'rgb(' + random(0, 255) + ', ' + random(0, 255) + ', ' + random(0, 255) + ")";
+
+                tempPoint.data = [{x: j, y: j - 1}];
+
+                tempArray.push(tempPoint);
+
+                if (j == pastGamesLabel.length - 1) {
+                    setValueSpreadDatasets(tempArray);
+                }
             }
 
             console.log(tempArray);
+            console.log(valueSpreadDatasets);
+
+            // console.log(valueSpreadState.datasets);
+            // console.log(pastGamesState.datasets);
           });
     }, [apiUrl]);
 
@@ -186,19 +202,7 @@ export function ComparatorModel() {
             setApiUrl("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
         }
 
-        // console.log(pastGamesState.datasets[0].label); It Works.
-
-        // valueSpreadState.datasets = new Array(vegasValues.length).fill({
-        //     label: null,
-        //     backgroundColor: null,
-        //     borderColor: 'rgba(0,0,0,1)',
-        //     pointRadius: 5,
-        //     pointHoverRadius: 5,
-        //     borderWidth: 2,
-        //     pointStyle: 'rectRounded',
-        //     showLine: false,
-        //     data: null,
-        // });
+        console.log(valueSpreadDatasets);
     }
 
     function convertDate(date) {
@@ -244,7 +248,23 @@ export function ComparatorModel() {
                     </IconButton>
                 </CardContent>
             </Card>
-            <Scatter data={data}/>
+            <Scatter 
+                className = {classes.valueSpreadGraph}
+                data = {valueSpreadState}
+                fontSize = {15}
+                width = {1200}
+                height = {600}
+                options = {{
+                    animation: false,
+                    maintainAspectRatio: false,
+                    responsive: false,
+                    legend: {
+                        labels: {
+                            fontColor: 'black'
+                        }
+                    }
+                }}
+            />
         </div>
     )
 }
@@ -260,9 +280,6 @@ export function ComparatorModel() {
 
     --> Somehow create a dataset for each match-day.
 */
-
-
-// console.log(pastGamesState.datasets[i]);
 
 const rand = () => Math.round(Math.random() * 20 - 10);
 
