@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Line, Scatter} from 'react-chartjs-2';
 import {makeStyles} from '@material-ui/core';
 import {Card, CardContent} from '@material-ui/core';
-import {ChevronRight} from "@material-ui/icons";
+import {KeyboardArrowDown} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({ 
     containerOne: {
@@ -28,10 +28,33 @@ const useStyles = makeStyles((theme) => ({
         order: 3,
         marginTop: "10px",
     },
-    pastGamesGraph: {
+    firstGraphText: { 
         order: 4,
+        marginTop: "25px",
+        fontSize: "20px",
+    },
+    pastGamesGraph: {
+        order: 5,
         marginTop: "5px",
     },
+    secondGraphText: { 
+        order: 6,
+        marginTop: "5px",
+        fontSize: "20px",
+    },
+    valueSpreadGraph: {
+        display: "flex",
+        order: 7,
+        marginLeft: "200px",
+        marginBottom: "20px",
+        marginTop: "20px",
+    },
+        // arrow: {
+    //     display: "flex",
+    //     order: 5,
+    //     marginLeft: "1300px",
+    //     size: 'small',
+    // },
     card: {
         maxWidth: 1400,
         margin: "auto",
@@ -39,15 +62,8 @@ const useStyles = makeStyles((theme) => ({
         borderWidth: 2,
         borderColor: "#292423",
         marginTop: "10px",
-    },
-    backAndForth: {
-        marginLeft: "1300px",
-        size: 'small',
-    },
-    valueSpreadGraph: {
-        marginLeft: "200px",
         marginBottom: "10px",
-    }
+    },
 }));
 
 export function ComparatorModel() {
@@ -78,7 +94,20 @@ export function ComparatorModel() {
     
     // Graph #2:
     const [valueSpreadLabel, setValueSpreadLabel] = React.useState([]);    
-    const [valueSpreadDatasets, setValueSpreadDatasets] = React.useState([]);
+    const [valueSpreadDatasets, setValueSpreadDatasets] = React.useState([{
+        labels: valueSpreadLabel,
+        datasets: {
+            label: "Test",
+            backgroundColor: "rgb(0,88,255)",
+            borderColor: 'rgba(0,0,0,1)',
+            pointRadius: 5,
+            pointHoverRadius: 5,
+            borderWidth: 2,
+            pointStyle: 'rectRounded',
+            showLine: false,
+            data: {x: 1, y: 2},
+        },
+    }]);
 
     var spreadList = [];
     var valueList = [];
@@ -119,7 +148,7 @@ export function ComparatorModel() {
         datasets: valueSpreadDatasets,
     }
 
-    React.useEffect(() => { // https://stackoverflow.com/questions/65591286/react-chartjs-scatter-plot-cannot-plot-the-data
+    React.useEffect(() => {
         axios
           .get(apiUrl)
           .then((response) => response.data)
@@ -156,7 +185,7 @@ export function ComparatorModel() {
 
             let tempArray = [];
 
-            for (let j = 0; j < pastGamesLabel.length; j++) {
+            for (let j = 0; j < pastGamesLabelTemp.length; j++) {
                 let tempPoint = {
                     label: null,
                     backgroundColor: null,
@@ -169,25 +198,19 @@ export function ComparatorModel() {
                     data: null,
                 }
 
-                var matchup = pastGamesLabel[j];
+                var matchup = pastGamesLabelTemp[j];
 
                 tempPoint.label = matchup;
                 tempPoint.backgroundColor = 'rgb(' + random(0, 255) + ', ' + random(0, 255) + ', ' + random(0, 255) + ")";
 
-                tempPoint.data = [{x: j, y: j - 1}];
+                tempPoint.data = [{x: valueList[j], y: spreadList[j]}];
 
                 tempArray.push(tempPoint);
 
-                if (j == pastGamesLabel.length - 1) {
+                if (j == pastGamesLabelTemp.length - 1) {
                     setValueSpreadDatasets(tempArray);
                 }
             }
-
-            console.log(tempArray);
-            console.log(valueSpreadDatasets);
-
-            // console.log(valueSpreadState.datasets);
-            // console.log(pastGamesState.datasets);
           });
     }, [apiUrl]);
 
@@ -201,8 +224,6 @@ export function ComparatorModel() {
         if (!(apiUrl === ("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day))) {
             setApiUrl("http://35.153.97.187:8080/schedule/GamesByDate/" + year + "-" + month + "-" + day);
         }
-
-        console.log(valueSpreadDatasets);
     }
 
     function convertDate(date) {
@@ -224,6 +245,7 @@ export function ComparatorModel() {
                             dateFormat = "yyyy-MM-dd"
                             className = {classes.pastGamesDateField}
                         />
+                        <b className = {classes.firstGraphText}>Model-Vegas Graph:</b>
                         <Line
                             data = {pastGamesState}
                             fontSize = {15}
@@ -241,69 +263,28 @@ export function ComparatorModel() {
                             }}
                             className = {classes.pastGamesGraph}
                         />
+                        <b className = {classes.secondGraphText}>Model-Vegas Scatterplot:</b>
+                        <Scatter 
+                            data = {valueSpreadState}
+                            fontSize = {15}
+                            width = {1200}
+                            height = {600}
+                            options = {{
+                                animation: false,
+                                maintainAspectRatio: false,
+                                responsive: false,
+                                legend: {
+                                    labels: {
+                                        fontColor: 'black'
+                                    }
+                                }
+                            }}
+                            className = {classes.valueSpreadGraph}
+                        />
                         <Button className = {classes.pastGamesButton} onClick={handleClick} variant = "contained" color = "default">Generate Chart</Button>
                     </div>
-                    <IconButton className = {classes.backAndForth}>
-                        <ChevronRight/>
-                    </IconButton>
                 </CardContent>
             </Card>
-            <Scatter 
-                className = {classes.valueSpreadGraph}
-                data = {valueSpreadState}
-                fontSize = {15}
-                width = {1200}
-                height = {600}
-                options = {{
-                    animation: false,
-                    maintainAspectRatio: false,
-                    responsive: false,
-                    legend: {
-                        labels: {
-                            fontColor: 'black'
-                        }
-                    }
-                }}
-            />
         </div>
     )
 }
-
-/* 
-    - X-axis: Value (Model)
-    - Y-axis: Spread (Vegas)
-    - Points: Individual match-days
-
-    a) Push value #'s into array and set it.
-    b) Push spread #'s into array and set it.
-    c) Push individual match-days into a points array and set it.
-
-    --> Somehow create a dataset for each match-day.
-*/
-
-const rand = () => Math.round(Math.random() * 20 - 10);
-
-const data = {
-  datasets: [
-    {
-      label: 'A dataset',
-      data: [
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-        { x: rand(), y: rand() },
-      ],
-      backgroundColor: 'rgba(90, 99, 132, 1)',
-    },
-  ],
-};
