@@ -9,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import RangeSlider from './RangeSlider';
+import Header from './Header';
+
 
 const columns = [
   { field: 'home', headerName: 'Home', width: 130 },
@@ -68,10 +70,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Games() {
   const [rowData, setRowData] = React.useState([]);
   const [rawData, setRawData] = React.useState([]);
-  const [max, setMax] = React.useState({home:"",away:"",spread:0,value:0,neutral:0,difference:0,pick:"",level:"",time:""});
+  const [max, setMax] = React.useState();
   const [min, setMin] = React.useState();
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [showAddTask, setShowAddTask] = React.useState(false)
   
 
   const handleClose = () => {
@@ -83,7 +86,7 @@ export default function Games() {
   };
 
   const handleMove = (value,value1,value2) =>{
-    console.log(value,value1,value2);
+      console.log(value,value1,value2);
       const newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
         d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0]) ;
       setRowData(newData);
@@ -99,7 +102,7 @@ export default function Games() {
   const classes = useStyles();
 
   React.useEffect(() => {
-    var apiurl = "http://3.84.121.75:8080/schedule/Games";
+    var apiurl = "http://35.153.97.187:8080/schedule/Games";
     axios
       .get(apiurl)
       .then((response) => response.data)
@@ -112,13 +115,10 @@ export default function Games() {
       });
         //const maxdata = rawData.sort(function(a, b){return a.spread - b.spread});
         //console.log(typeof(maxdata));
-        //setMin(maxdata[0]);
-        //setMinmin(min.spread);
-        const mindata = rawData.sort(function(a, b){return b.spread - a.spread});
-        setMax(mindata[0]);
-        //setMaxmax(max.spread);
-        console.log(mindata[0]);
-        console.log(max.spread);
+        //setMin(maxdata[0].spread);
+        //const mindata = rawData.sort(function(a, b){return b.spread - a.spread});
+        //setMax(mindata[0].spread);
+        //console.log(max.spread);
   }, []);
   
   
@@ -129,8 +129,8 @@ export default function Games() {
 
   return (
     <div>
-
-      <RangeSlider handleMove = {handleMove}/>
+    <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+      {showAddTask && <RangeSlider handleMove = {handleMove}/>}
 
       {isLoaded ? <DataGrid rows={rowData} columns={columns} getRowId ={(rowData) => rowData.home} autoHeight={true} /> :
       <CircularProgress />}

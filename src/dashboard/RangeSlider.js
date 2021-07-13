@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   root: {
@@ -34,7 +35,12 @@ export default function RangeSlider({handleMove}) {
     handleMove(value,value1,value2);
     
   };
-  
+  const handleReset = () =>{
+    setValue([-11,25]);
+    setValue1([-8,25]);
+    setValue2([-12.5,25]);
+    handleMove(value,value1,value2);
+  }
   
 
   return (
@@ -57,7 +63,7 @@ export default function RangeSlider({handleMove}) {
       </Typography>
       <Slider
         min = {-8}
-        max = {22}
+        max = {25}
         step = {0.5}
         value={value1}
         onChange={handleChange1}
@@ -70,7 +76,7 @@ export default function RangeSlider({handleMove}) {
       </Typography>
       <Slider
         min = {-12.5}
-        max = {16.5}
+        max = {25}
         step = {0.5}
         value={value2}
         onChange={handleChange2}
@@ -78,6 +84,7 @@ export default function RangeSlider({handleMove}) {
         aria-labelledby="range-slider"
         getAriaValueText={valuetext}
       />
+      <Button onClick = {handleReset} variant="contained" color = "primary" size = "small"> reset </Button>
     </div>
     
     
