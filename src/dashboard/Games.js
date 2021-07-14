@@ -70,11 +70,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Games() {
   const [rowData, setRowData] = React.useState([]);
   const [rawData, setRawData] = React.useState([]);
-  const [max, setMax] = React.useState();
-  const [min, setMin] = React.useState();
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [showAddTask, setShowAddTask] = React.useState(false)
+  
   
 
   const handleClose = () => {
@@ -85,16 +83,13 @@ export default function Games() {
     setOpen(true);
   };
 
-  const handleMove = (value,value1,value2) =>{
-      console.log(value,value1,value2);
+  const handleMove = (value,value1,value2,value3) =>{
+      console.log(value,value1,value2,value3);
       const newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
-        d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0]) ;
+        d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0] 
+        && d.difference <= value3[1] && d.difference >= value3[0] ) ;
       setRowData(newData);
       
-      //const newData2 = rowData.filter(d => d.value <= value1[1] && d.value >=value1[0]);
-      //setRowData(newData2);
-      //const newData3 = rowData.filter(d => d.neutral <= value2[1] && d.neutral >= value2[0]);
-      //setRowData(newData3);
   
   }
   
@@ -108,29 +103,58 @@ export default function Games() {
       .then((response) => response.data)
       .then((data) => {
         setIsLoaded(true);
-        //setRowData(data.data);
         setRawData(data.data);
         const newdata = data.data;
         setRowData(newdata);
       });
-        //const maxdata = rawData.sort(function(a, b){return a.spread - b.spread});
-        //console.log(typeof(maxdata));
-        //setMin(maxdata[0].spread);
-        //const mindata = rawData.sort(function(a, b){return b.spread - a.spread});
-        //setMax(mindata[0].spread);
-        //console.log(max.spread);
+        
   }, []);
-  
-  
-  
-  
-  
+//find max and min values dynamically for spread,value,neutral,and difference.
+     let  spreadMax= 0;
+     rawData.forEach((e)=> { spreadMax < e.spread ? spreadMax = e.spread : spreadMax = spreadMax});
+     spreadMax = Math.floor(spreadMax + 1);
+     //console.log(spreadMax);
+ 
+     let spreadMin = 0;
+     rawData.forEach((e)=> {spreadMin > e.spread? spreadMin = e.spread : spreadMin = spreadMin});
+     spreadMin = Math.floor(spreadMin);
+     //console.log(spreadMin);
 
+     let  valueMax= 0;
+     rawData.forEach((e)=> { valueMax < e.value ? valueMax = e.value : valueMax = valueMax});
+     valueMax = Math.floor(valueMax + 1);
+     //console.log(valueMax);
+ 
+     let valueMin = 0;
+     rawData.forEach((e)=> {valueMin > e.value? valueMin = e.value : valueMin = valueMin});
+     valueMin = Math.floor(valueMin);
+     //console.log(valueMin);
+
+     let  neutralMax= 0;
+     rawData.forEach((e)=> { neutralMax < e.neutral ? neutralMax = e.neutral : neutralMax = neutralMax});
+     neutralMax = Math.floor(neutralMax + 1);
+     //console.log(neutralMax);
+ 
+     let neutralMin = 0;
+     rawData.forEach((e)=> {neutralMin > e.neutral? neutralMin = e.neutral : neutralMin = neutralMin});
+     neutralMin = Math.floor(neutralMin);
+     //console.log(neutralMin);
+
+     let  differenceMax= 0;
+     rawData.forEach((e)=> { differenceMax < e.difference ? differenceMax = e.difference : differenceMax = differenceMax});
+     differenceMax = Math.floor(differenceMax + 1);
+     //console.log(differenceMax);
+ 
+     let differenceMin = 0;
+     rawData.forEach((e)=> {differenceMin > e.difference? differenceMin = e.difference : differenceMin = differenceMin});
+     differenceMin = Math.floor(differenceMin);
+     //console.log(differenceMin);
+    
 
   return (
     <div>
-    <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
-      {showAddTask && <RangeSlider handleMove = {handleMove}/>}
+      <RangeSlider handleMove = {handleMove} a = {spreadMax} b = {spreadMin}
+      c = {valueMax} d = {valueMin} e = {neutralMax} f = {neutralMin} g = {differenceMax} h = {differenceMin}/>
 
       {isLoaded ? <DataGrid rows={rowData} columns={columns} getRowId ={(rowData) => rowData.home} autoHeight={true} /> :
       <CircularProgress />}
