@@ -17,10 +17,10 @@ function valuetext(value) {
 export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
   const classes = useStyles();
 
-  const [value, setValue] = React.useState([b, a]);
-  const [value1, setValue1] = React.useState([d, c]);
-  const [value2, setValue2] = React.useState([f, e]);
-  const [value3, setValue3] = React.useState([g, h]);
+  const [value, setValue] = React.useState([-100, 100]);
+  const [value1, setValue1] = React.useState([-100, 100]);
+  const [value2, setValue2] = React.useState([-100, 100]);
+  const [value3, setValue3] = React.useState([-100, 100]);
   
   const [open, setOpen] = React.useState(true);
   const [open1, setOpen1] = React.useState(true);
@@ -50,9 +50,13 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
     
   };
   
-  const A = () =>{
-    setValue([b,a]);
-  }
+  React.useEffect(()=>{
+    handleReset();
+    handleReset1();
+    handleReset2();
+    handleReset3();
+  },[]);
+
   const handleReset = () =>{
     setValue([b,a]);
     console.log('triggered');
@@ -75,6 +79,7 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
     handleMove(value,value1,value2,value3);
     setOpen3(!open3);
   }
+
   
 
   return (
