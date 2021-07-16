@@ -1,9 +1,11 @@
 import React from "react";
 import axios from 'axios';
 
-import {Route, Switch} from "react-router-dom";
+import {matchPath, Route, Switch} from "react-router-dom";
 import {Button, Card, CardContent, CardHeader, CardActions, Typography, IconButton, makeStyles } from '@material-ui/core';
 import clsx from "clsx";
+import Link from '@material-ui/core/Link';
+
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
@@ -114,6 +116,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
+  column: {
+    flexBasis: '33.33%',
+  },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
@@ -144,6 +149,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(25),
     color: theme.palette.text.secondary,
   },
+  logo: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  }
 }));
 
 export default function TeamInfo() {
@@ -178,8 +188,9 @@ export default function TeamInfo() {
   const [teamData,setTeamData] = React.useState({});
   const [games, setGames] = React.useState([])
   let { TeamName } = useParams();
+  const preventDefault = (event) => event.preventDefault();
 
-  var teamapiurl = "http://http://35.153.97.187:8080/schedule/TeamSchedule/"+TeamName;
+  var teamapiurl = "http://35.153.97.187:8080/schedule/TeamSchedule/"+TeamName;
   var date = "";
 
     React.useEffect(() => {
@@ -193,10 +204,10 @@ export default function TeamInfo() {
         .get(teamapiurl)
         .then((response) => response.data)
         .then((data) => {
-            setGames(data.data)
+            setGames(data.data.reverse())
         });
         axios
-        .get('http://http://35.153.97.187:8080/teams')
+        .get('http://35.153.97.187:8080/teams')
         .then((response) => response.data)
         .then((data) => {
             getTeamLogo(data.data)
@@ -288,15 +299,20 @@ export default function TeamInfo() {
                     // title="Paella dish"
                     
                 >
-                    <img src={teamLogo}/>
+                {/* <Image src={teamLogo} className={classes.logo} style={width='12%'}/> */}
+                <Paper variant="outlined">
+                  <img src={teamLogo}/>
+                </Paper>
+                {/* <CardMedia
+                className={classes.media}
+                image={teamLogo}
+                title="Team Image"
+                /> */}
                 </CardMedia>
                 <CardContent>
                     <Typography paragraph>Rank: {teamData.ranking}</Typography>
                     <Typography paragraph>Wins: {teamData.wins}</Typography>
-                    <Typography  paragraph>Losses: {teamData.losses}</Typography>
-                    <Button size="small" color="primary">
-                        Learn More
-                    </Button>
+                    <Typography paragraph>Losses: {teamData.losses}</Typography>
                 </CardContent>
                 <Accordion>
                 <AccordionSummary
@@ -304,9 +320,11 @@ export default function TeamInfo() {
                   aria-controls="panel1bh-content"
                   id="panel1bh-header"
                 >
+                <Avatar src="/broken-image.jpg" />
                   <Typography className={classes.heading} style={{color:"#00adb5" }}>Picked Team Color</Typography>
                   <Typography className={classes.secondaryHeading}>Score</Typography>
                   <Typography align="right" className={classes.secondHeading} style={{color:"#000000"}}>Other Team</Typography>
+                  <Avatar src="/broken-image.jpg" />
                 </AccordionSummary>
             </Accordion>
             {games.map(match => (
@@ -317,13 +335,28 @@ export default function TeamInfo() {
                   id="panel1bh-header"
                 >
                   <Avatar alt="Home Team" variant="rounded" src={match.homelogo} className={classes.medium} />
-                  <Typography className={classes.heading} style={{color:match.home == match.pick ? "#00adb5" :"#000000"}}>{match.home}</Typography>
+                  <Typography className={classes.heading} style={{color:match.home == match.pick ? "#00adb5" :"#000000"}}>
+                    {match.home!=teamData.school ? 
+                      <Link href={"/Teams/"+match.home} color="inherit"> 
+                        {match.home}
+                      </Link> 
+                      : match.home
+                    }
+                  </Typography>
                   <Typography className={classes.secondaryHeading}>{match.homescore} vs {match.awayscore}</Typography>
-                  <Typography align="right" className={classes.secondHeading} style={{color: match.away == match.pick ? "#00adb5" :"#000000"}}>{match.away}</Typography>
+                  <Typography align="right" className={classes.secondHeading} style={{color: match.away == match.pick ? "#00adb5" :"#000000"}}>
+                    {match.away!=teamData.school ? 
+                        <Link href={"/Teams/"+match.away} color="inherit"> 
+                        {match.away}
+                      </Link> 
+                      : match.away
+                    }
+                  </Typography>
                   <Avatar alt="Away Team" variant="rounded" src={match.awaylogo} className={classes.medium} />
                 </AccordionSummary>
                 <AccordionDetails align="center">
-                  <div>
+                
+                  <div className={classes.column}>
                     <Typography>Date: {date = new Date(match.time),
                     date.getDate()+
                       "/"+(date.getMonth()+1)+
@@ -333,12 +366,12 @@ export default function TeamInfo() {
                       ":"+date.getSeconds()}
                     </Typography>
                   </div>
-                  <div align="center">
+                  <div className={classes.column} align="center">
                     <Typography>Spread: {match.spread}</Typography>
                     <Typography>Actual Score: {match.finalresult}</Typography>
                   </div>
 
-                  <div align="center">
+                  <div className={classes.column} align="center">
                     <Typography>Value: {match.value}</Typography>
                     <Typography>Level: {match.level}</Typography>
                   </div>
