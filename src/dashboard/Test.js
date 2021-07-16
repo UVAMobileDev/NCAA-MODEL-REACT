@@ -45,11 +45,11 @@ const useStyles = makeStyles((theme) => ({
     valueSpreadGraph: {
         display: "flex",
         order: 7,
-        marginLeft: "200px",
+        marginLeft: "100px",
         marginBottom: "20px",
         marginTop: "20px",
     },
-        // arrow: {
+    // arrow: {
     //     display: "flex",
     //     order: 5,
     //     marginLeft: "1300px",
