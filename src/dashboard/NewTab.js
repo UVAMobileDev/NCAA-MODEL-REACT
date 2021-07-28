@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import NewButton from './NewButton';
 import Chips from './Chips';
+import PieChart from './PieChart';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -74,7 +75,7 @@ export default function NewTab() {
         <Chips />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Nothing here
+        <PieChart />
       </TabPanel>
     </div>
   );
