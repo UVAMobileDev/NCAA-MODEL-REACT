@@ -10,6 +10,9 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import RangeSlider from './RangeSlider';
 import Header from './Header';
+import PieChart from './PieChart';
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 
 const columns = [
@@ -54,6 +57,19 @@ const columns = [
     headerName: 'Time',
     width: 200,
   }
+  // {
+  //   field: 'isCorrect',
+  //   headerName: 'IsCorrect',
+  //   type: 'number',
+  //   width: 100,
+  // },
+  // {
+  //   field: 'isCloser',
+  //   headerName: 'Iscloser',
+  //   type: 'number',
+  //   width: 100,
+  // },
+
 ];
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -71,24 +87,20 @@ export default function Games() {
   const [rowData, setRowData] = React.useState([]);
   const [rawData, setRawData] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [correctNum,setCorrectNum] = React.useState(0);
   
   
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
+  
   const handleMove = (value,value1,value2,value3) =>{
       console.log(value,value1,value2,value3);
       const newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
         d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0] 
         && d.difference <= value3[1] && d.difference >= value3[0] ) ;
       setRowData(newData);
+      let num = 0;
+      rowData.forEach((e)=>{ num += e.isCloser})
+      setCorrectNum(num);
       
   
   }
@@ -106,9 +118,15 @@ export default function Games() {
         setRawData(data.data);
         const newdata = data.data;
         setRowData(newdata);
+        let num = 0;
+        newdata.forEach((e)=>{ num += e.isCloser})
+        console.log(num);
+        setCorrectNum(num);
+        
       });
         
   }, []);
+  
 //find max and min values dynamically for spread,value,neutral,and difference.
      let  spreadMax= 0;
      rawData.forEach((e)=> { spreadMax < e.spread ? spreadMax = e.spread : spreadMax = spreadMax});
@@ -153,9 +171,19 @@ export default function Games() {
 
   return (
     <div>
+    <Grid container spacing={3}>
+           <Grid item xs={12} md={7} lg={7}>
+              <Paper >
+              <PieChart correct = {correctNum} incorrect = {rowData.length - correctNum} />
+              </Paper>
+            </Grid>
+      <Grid item xs={12} md={7} lg={5}>
+        <Paper>
       <RangeSlider handleMove = {handleMove} a = {spreadMax} b = {spreadMin}
       c = {valueMax} d = {valueMin} e = {neutralMax} f = {neutralMin} g = {differenceMax} h = {differenceMin}/>
-
+        </Paper>
+      </Grid>
+      </Grid>
       {isLoaded ? <DataGrid rows={rowData} columns={columns} getRowId ={(rowData) => rowData.home} autoHeight={true} /> :
       <CircularProgress />}
       
