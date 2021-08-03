@@ -8,10 +8,13 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import InfoIcon from "@material-ui/icons/Info";
+import LayersIcon from "@material-ui/icons/Layers";
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AdbIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Link } from "react-router-dom";
+import ListIcon from '@material-ui/icons/List';
 
 export const mainListItems = (
   <div>
@@ -61,6 +64,14 @@ export const mainListItems = (
           <ArrowBackIcon />
         </ListItemIcon>
         <ListItemText primary="Past Games" />
+      </ListItem>
+    </Link>
+    <Link to="/Teams" style={{ textDecoration: "none" }}>
+      <ListItem button>
+        <ListItemIcon>
+          <ListIcon />
+        </ListItemIcon>
+        <ListItemText primary="Teams" />
       </ListItem>
     </Link>
   </div>
