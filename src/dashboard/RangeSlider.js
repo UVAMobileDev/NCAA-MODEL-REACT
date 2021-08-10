@@ -2,7 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import Button from './Button';
+import Button from '@material-ui/core/Button';
+//import { green, purple } from '@material-ui/core/colors';
+//import Button from './Button';
 
 const useStyles = makeStyles({
   root: {
@@ -83,19 +85,18 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
     <Typography variant="caption" display="block" gutterBottom>
         
       </Typography>
-    <Button
-          color={'#556cd6'}
-          text={"APPLY"}
-          onClick={()=>{handleApply()}}
-        />
+    <Button variant="contained" color="primary" onClick={()=>{handleApply()}}> 
+      APPLY
+    </Button>
       <Typography id="range-slider" gutterBottom>
          Spread range
       </Typography>
-      <Button
-          color={open ? 'red' : '#556cd6'}
-          text={open ? 'Close' : 'Open'}
-          onClick={() => {handleReset()}}
-        />
+      {!open && <Button variant="contained" color="primary" size="small" onClick={() => {handleReset()}}>
+        Open
+      </Button>}
+      {open && <Button variant="contained" color="secondary" size="small" onClick={() => {handleReset()}}>
+        Close
+      </Button>}
       {open && <Slider
         min = {b}
         max = {a}
@@ -109,11 +110,12 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
       <Typography id="range-slider" gutterBottom>
          Value range
       </Typography>
-      <Button
-          color={open1 ? 'red' : '#556cd6'}
-          text={open1 ? 'Close' : 'Open'}
-          onClick={()=>{handleReset1()}}
-        />
+      {!open1 && <Button variant="contained" color="primary" size="small" onClick={() => {handleReset1()}}>
+        Open
+      </Button>}
+      {open1 && <Button variant="contained" color="secondary" size="small" onClick={() => {handleReset1()}}>
+        Close
+      </Button>}
       {open1 && <Slider
         min = {d}
         max = {c}
@@ -127,11 +129,12 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
       <Typography id="range-slider" gutterBottom>
          Neutral range
       </Typography>
-      <Button
-          color={open2 ? 'red' : '#556cd6'}
-          text={open2 ? 'Close' : 'Open'}
-          onClick={()=>{handleReset2()}}
-        />
+      {!open2 && <Button variant="contained" color="primary" size="small" onClick={() => {handleReset2()}}>
+        Open
+      </Button>}
+      {open2 && <Button variant="contained" color="secondary" size="small" onClick={() => {handleReset2()}}>
+        Close
+      </Button>}
       {open2 && <Slider
         min = {f}
         max = {e}
@@ -145,11 +148,12 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
       <Typography id="range-slider" gutterBottom>
          Difference range
       </Typography>
-      <Button
-          color={open3 ? 'red' : '#556cd6'}
-          text={open3 ? 'Close' : 'Open'}
-          onClick={()=>{handleReset3()}}
-        />
+      {!open3 && <Button variant="contained" color="primary" size="small" onClick={() => {handleReset3()}}>
+        Open
+      </Button>}
+      {open3 && <Button variant="contained" color="secondary" size="small" onClick={() => {handleReset3()}}>
+        Close
+      </Button>}
       { open3 && <Slider
         min = {h}
         max = {g}
