@@ -1,6 +1,9 @@
 import React from "react";
 import clsx from "clsx";
+import PropTypes from 'prop-types';
+import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
@@ -14,6 +17,7 @@ import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import GitHubIcon from '@material-ui/icons/GitHub';
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -24,6 +28,173 @@ import PastGames from "./PastGamesGenerator.js";
 import PastGamesGenerator from "./PastGamesGenerator.js";
 
 const drawerWidth = 240;
+
+function Group(props) {
+  const { title, description, classes, members } = props;
+  return (
+    <div>
+      <Typography gutterBottom component="h2" variant="h5">
+        {title}
+      </Typography>
+      <Typography>{description}</Typography>
+      <Grid container spacing={2} className={classes.container}>
+        {members.map((member) => (
+          <Grid key={member.name} item xs={12} md={6}>
+            <Paper variant="outlined">
+              <Grid container wrap="nowrap">
+                <Grid item>
+                  <CardMedia
+                    className={classes.cover}
+                    image={`https://github.com/${member.github}.png`}
+                    title="Avatar"
+                  />
+                </Grid>
+                <Grid item>
+                  <div className={classes.details}>
+                    <Typography component="h3" variant="h6">
+                      {member.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {member.flag}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {member.location}
+                    </Typography>
+                    <Grid container>
+                      {member.github && (
+                        <IconButton
+                          aria-label="github"
+                          component="a"
+                          href={`https://github.com/${member.github}`}
+                          className={classes.icon}
+                        >
+                          <GitHubIcon fontSize="inherit" />
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </div>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  );
+}
+
+Group.propTypes = {
+  classes: PropTypes.object.isRequired,
+  description: PropTypes.string.isRequired,
+  members: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+};
+
+const modelDesigners = [
+  {
+    name: 'Nadim El-Jaroudi',
+    github: 'nje2494',
+    flag: 'Model Founder',
+    location: 'Portland, Maine, US',
+  },
+  {
+    name: 'Guy 1',
+    github: 'python',
+    flag: 'Model Designer',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'Guy 2',
+    github: 'python',
+    flag: 'Model Designer',
+    location: 'Somewhere, US',
+  }
+];
+const devTeam = [
+  {
+    name: 'Nadim El-Jaroudi',
+    github: 'nje2494',
+    flag: 'Team Lead',
+    location: 'Portland, Maine, US',
+  },
+  {
+    name: 'Mingzhe Wu',
+    github: 'MingzheWu418',
+    flag: 'Our Rock',
+    location: 'Portland, Maine, US',
+  },
+  {
+    name: 'Emmanuel Edu',
+    github: 'Eziedu',
+    flag: 'Big-Time Baller',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'Jasmine Dogu',
+    github: 'jasminedogu',
+    flag: 'Script Legend',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'Rudy Schneider',
+    github: 'rudyschneider',
+    flag: 'Dead Weight',
+    location: 'Arlington, Virginia, US',
+  }
+];
+const websiteTeam = [
+  {
+    name: 'Rudy Schneider',
+    github: 'rudyschneider',
+    flag: 'Team Lead',
+    location: 'Arlington, Virginia, US',
+  },
+  {
+    name: 'Asad Shamsiev',
+    github: 'as-4030',
+    flag: 'Graphs & Logistics',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'William Ngu',
+    github: 'Will-Ngu',
+    flag: 'Page Layout & API Designer',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'Yanjin Chen',
+    github: 'YanjinChen2023',
+    flag: 'Data Analysis',
+    location: 'Somewhere, US',
+  },
+  {
+    name: 'Sebastian Cayo',
+    github: 'Sedba5',
+    flag: 'Script and Database Management',
+    location: 'Somewhere, US',
+  },
+];
+
+const styles = (theme) => ({
+  details: {
+    margin: theme.spacing(1, 1, 1, 0),
+  },
+  cover: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    margin: theme.spacing(2),
+    borderRadius: '50%',
+    flexShrink: 0,
+    backgroundColor: theme.palette.background.default,
+  },
+  icon: {
+    fontSize: 18,
+    padding: theme.spacing(1),
+  },
+  container: {
+    margin: theme.spacing(2, 0, 4),
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,7 +275,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+function About(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -174,8 +345,43 @@ export default function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Title>About this site</Title>
-                <p1>This website is a website.</p1>
+                <Group
+                  title="About This Site"
+                  description={`This website is the brainchild of UVA Development Hub leader Nadim El-Jaroudi.
+                  Through years of on and off development, the model was developed as both a pet project and
+                  a learning  experience for DevHub interns to get their feet wet in different areas of programming
+                  by collaorating on a prediction model designed to beat the Vegas spread of Men's Division I NCAA 
+                  Basketball games.`}
+                  members={[]}
+                  {...props}
+                />
+              </Paper>
+              <Paper className={classes.paper}>
+                <Group
+                  title="Original Model Architects"
+                  description={`The Model was originally created by 
+                  the work of these three awesome dudes:`}
+                  members={modelDesigners}
+                  {...props}
+                />
+              </Paper>
+              <Paper className={classes.paper}>
+                <Group
+                  title="Model Development Team"
+                  description={`Work on the model was continued on and 
+                  improved thorugh the work of the following members:`}
+                  members={devTeam}
+                  {...props}
+                />
+              </Paper>
+              <Paper className={classes.paper}>
+                <Group
+                  title="Model Website Team"
+                  description={`The following members worked to display the Model
+                  in the website you see here:`}
+                  members={websiteTeam}
+                  {...props}
+                />
               </Paper>
             </Grid>
           </Grid>
@@ -187,3 +393,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withStyles(styles)(About);
