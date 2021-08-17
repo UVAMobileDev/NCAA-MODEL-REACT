@@ -86,25 +86,45 @@ const useStyles = makeStyles((theme) => ({
 export default function Games() {
   const [rowData, setRowData] = React.useState([]);
   const [rawData, setRawData] = React.useState([]);
+ // const [currentData,setCurrentData] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [correctNum,setCorrectNum] = React.useState(0);
+  const [isOpen,setIsOpen] = React.useState(false);
+  const [correct,setCorrect] = React.useState(0);
+  const [closer,setcloser] = React.useState(0);
   
   
 
   
   const handleMove = (value,value1,value2,value3) =>{
       console.log(value,value1,value2,value3);
-      const newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
+      let newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
         d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0] 
         && d.difference <= value3[1] && d.difference >= value3[0] ) ;
       setRowData(newData);
       let num = 0;
       rowData.forEach((e)=>{ num += e.isCloser})
-      setCorrectNum(num);
+      setcloser(num);
+      let num2 = 0;
+      rowData.forEach((e)=> num2 += e.isCorrect)
+      setCorrect(num2);
       
   
   }
-  
+  const handleButton1 = () => {
+    let num = 0;
+    rowData.forEach((e)=>{ num += e.isCloser})
+    setcloser(num);
+    setIsOpen(!isOpen);
+
+  }
+  const handleButton2 = () => {
+    let num = 0;
+    rowData.forEach((e)=>{ num += e.isCorrect})
+    setCorrect(num);
+    setIsOpen(!isOpen);
+
+  }
+
 
   const classes = useStyles();
 
@@ -119,9 +139,13 @@ export default function Games() {
         const newdata = data.data;
         setRowData(newdata);
         let num = 0;
+        let num2 = 0;
         newdata.forEach((e)=>{ num += e.isCloser})
-        console.log(num);
-        setCorrectNum(num);
+        newdata.forEach((e)=>{num2+= e.isCorrect})
+        setcloser(num);
+        setCorrect(num2);
+        console.log(num,num2)
+        
         
       });
         
@@ -173,9 +197,21 @@ export default function Games() {
     <div>
     <Grid container spacing={3}>
            <Grid item xs={12} md={7} lg={7}>
-              <Paper >
-              <PieChart correct = {correctNum} incorrect = {rowData.length - correctNum} />
-              </Paper>
+              {!isOpen && 
+                <Paper> 
+                <Button variant="contained" color="primary" size="small" onClick={handleButton2}>
+                    See correct
+                </Button> 
+                <PieChart correct = {closer} incorrect = {rowData.length - closer} name = 'close' />
+                </Paper>}
+              {isOpen && 
+                <Paper> 
+                <Button variant="contained" color="primary" size="small" onClick={handleButton1}>
+                    See closer
+                </Button> 
+                <PieChart correct = {correct} incorrect = {rowData.length - correct} name = 'correct'/>
+                </Paper>}
+              
             </Grid>
       <Grid item xs={12} md={7} lg={5}>
         <Paper>
