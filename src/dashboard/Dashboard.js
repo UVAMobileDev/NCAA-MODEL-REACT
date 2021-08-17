@@ -23,6 +23,11 @@ import BarChartGames from "./BarChartGames";
 import Games from "./Games";
 import NumGames from "./NumGames";
 import Copyright from "./Copyright";
+import { Button } from "@material-ui/core";
+import NewButton from "./NewButton";
+import NewTab from "./NewTab";
+
+
 
 const drawerWidth = 240;
 
@@ -176,7 +181,7 @@ export default function Dashboard() {
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <BarChartGames />
+                <NewTab />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
