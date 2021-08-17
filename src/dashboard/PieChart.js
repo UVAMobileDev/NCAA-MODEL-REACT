@@ -5,8 +5,9 @@ function PieChart(props){
     console.log(props);
     let a = props.correct;
     let b = props.incorrect;
+    let c = props.name;
     const data = {
-        labels:['Close','NotClose'],
+        labels:[c,'Not'+c],
         datasets:[
             {
             label: 'prediction result',
