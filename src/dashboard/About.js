@@ -95,19 +95,19 @@ const modelDesigners = [
     name: 'Nadim El-Jaroudi',
     github: 'nje2494',
     flag: 'Model Founder',
-    location: 'Portland, Maine, US',
+    location: 'North Port, Maine, US',
   },
   {
-    name: 'Guy 1',
-    github: 'python',
+    name: 'Bobby Kearney',
+    github: 'github',
     flag: 'Model Designer',
-    location: 'Somewhere, US',
+    location: 'Pittsburgh, PA, US',
   },
   {
-    name: 'Guy 2',
-    github: 'python',
+    name: 'Miller Higgins',
+    github: 'github',
     flag: 'Model Designer',
-    location: 'Somewhere, US',
+    location: 'Washington, DC, US',
   }
 ];
 const devTeam = [
@@ -121,7 +121,7 @@ const devTeam = [
     name: 'Mingzhe Wu',
     github: 'MingzheWu418',
     flag: 'Our Rock',
-    location: 'Portland, Maine, US',
+    location: 'Somewhere, US',
   },
   {
     name: 'Emmanuel Edu',
@@ -159,7 +159,7 @@ const websiteTeam = [
     name: 'William Ngu',
     github: 'Will-Ngu',
     flag: 'Page Layout & API Designer',
-    location: 'Somewhere, US',
+    location: 'Richmond, VA, US',
   },
   {
     name: 'Yanjin Chen',
