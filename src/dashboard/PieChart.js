@@ -1,6 +1,6 @@
 import React from 'react'
 import {Doughnut} from 'react-chartjs-2'
-
+//add a comment
 function PieChart(props){
     console.log(props);
     let a = props.correct;
@@ -13,8 +13,8 @@ function PieChart(props){
             label: 'prediction result',
             data:[a,b],
             backgroundColor:[
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 205, 86, 1)'  
+                'rgba(112, 140, 255, 1)',
+                'rgba(210, 65, 149, 1)'  
             ]
         }
         ]
@@ -28,7 +28,7 @@ function PieChart(props){
         responsive: false
 
     }
-    return <Doughnut data = {data} width={400}
-	height={400} options = {options}/>
+    return <Doughnut data = {data} width={300}
+	height={300} options = {options}/>
 }
 export default PieChart
