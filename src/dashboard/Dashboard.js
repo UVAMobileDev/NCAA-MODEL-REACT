@@ -1,6 +1,8 @@
 import React from "react";
 import clsx from "clsx";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
@@ -23,6 +25,7 @@ import BarChartGames from "./BarChartGames";
 import Games from "./Games";
 import NumGames from "./NumGames";
 import Copyright from "./Copyright";
+import Donut from "./components/Donut.js";
 
 const drawerWidth = 240;
 
@@ -107,7 +110,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+
   const [open, setOpen] = React.useState(true);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -185,7 +190,9 @@ export default function Dashboard() {
                 <NumGames />
               </Paper>
             </Grid>
+
             {/* Recent Orders */}
+
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Games />

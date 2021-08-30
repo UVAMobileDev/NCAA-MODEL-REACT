@@ -9,6 +9,7 @@ import PastGames from "./dashboard/PastGames";
 import UpcomingGames from "./dashboard/UpcomingGames";
 import AllGames from "./dashboard/AllGames";
 import Totals from "./dashboard/Totals";
+import Stats from "./dashboard/Stats";
 import About from "./dashboard/About";
 import TeamList from "./dashboard/TeamList";
 import TeamInfo from "./dashboard/TeamInfo";
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/UpcomingGames" component={UpcomingGames} />
         <Route path="/AllGames" component={AllGames} />
         <Route path="/Totals" component={Totals} />
+        <Route path="/Stats" component={Stats} />
         <Route exact path="/Teams" component={TeamList} />
         <Route exact path="/Teams/:TeamName" component={TeamInfo} />
         <Route path="/PastGames" component={PastGames} />
