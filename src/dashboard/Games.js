@@ -1,3 +1,14 @@
+import * as React from "react";
+import { DataGrid } from "@material-ui/data-grid";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import axios from "axios";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import axios from 'axios';
@@ -16,45 +27,45 @@ import Paper from "@material-ui/core/Paper";
 
 
 const columns = [
-  { field: 'home', headerName: 'Home', width: 130 },
-  { field: 'away', headerName: 'Away', width: 130 },
+  { field: "home", headerName: "Home", width: 130 },
+  { field: "away", headerName: "Away", width: 130 },
   {
-    field: 'spread',
-    headerName: 'Spread',
-    type: 'number',
+    field: "spread",
+    headerName: "Spread",
+    type: "number",
     width: 100,
   },
   {
-    field: 'value',
-    headerName: 'Value',
-    type: 'number',
+    field: "value",
+    headerName: "Value",
+    type: "number",
     width: 90,
   },
   {
-    field: 'neutral',
-    headerName: 'Neutral',
-    type: 'number',
+    field: "neutral",
+    headerName: "Neutral",
+    type: "number",
     width: 100,
   },
   {
-    field: 'difference',
-    headerName: 'Difference',
-    type: 'number',
+    field: "difference",
+    headerName: "Difference",
+    type: "number",
     width: 105,
   },
   {
-    field: 'pick',
-    headerName: 'Pick',
+    field: "pick",
+    headerName: "Pick",
     width: 90,
   },
   {
-    field: 'level',
-    headerName: 'Level',
+    field: "level",
+    headerName: "Level",
     width: 130,
   },
   {
-    field: 'time',
-    headerName: 'Time',
+    field: "time",
+    headerName: "Time",
     width: 200,
   }
   // {
