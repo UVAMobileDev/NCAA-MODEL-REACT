@@ -1,17 +1,8 @@
 import React from "react";
-import axios from "axios";
-
-import { matchPath, Route, Switch } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Typography,
-  IconButton,
-  makeStyles,
-} from "@material-ui/core";
+import axios from 'axios';
+//$ git push -u origin <local-branch>
+import {matchPath, Route, Switch} from "react-router-dom";
+import {Button, Card, CardContent, CardHeader, CardActions, Typography, IconButton, makeStyles } from '@material-ui/core';
 import clsx from "clsx";
 import Link from "@material-ui/core/Link";
 
@@ -40,16 +31,20 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Copyright from "./Copyright";
 import Title from "./Title";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { useParams } from "react-router-dom";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import PieChart from "./PieChart";
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {
+    useParams
+  } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -194,37 +189,72 @@ export default function TeamInfo() {
   let { TeamName } = useParams();
   const preventDefault = (event) => event.preventDefault();
 
-  var teamapiurl =
-    "http://35.153.97.187:8080/schedule/TeamSchedule/" + TeamName;
+//piechart
+  const [correct,setCorrect] = React.useState(0);
+  const [closer,setcloser] = React.useState(0);
+  const [length,setLength] = React.useState(0);
+  const [isOpen,setIsOpen] = React.useState(false);
+  const [rawData,setRawData] = React.useState([]);
+
+  var teamapiurl = "http://35.153.97.187:8080/schedule/TeamSchedule/"+TeamName;
   var date = "";
 
-  React.useEffect(() => {
-    // axios
-    // .get("http://35.153.97.187:8080/schedule/games")
-    // .then((response) => response.data)
-    // .then((data) => {
-    //     setGames(data.data)
-    // });
-    axios
-      .get(teamapiurl)
-      .then((response) => response.data)
-      .then((data) => {
-        setGames(data.data.reverse());
-      });
-    axios
-      .get("http://35.153.97.187:8080/teams")
-      .then((response) => response.data)
-      .then((data) => {
-        getTeamLogo(data.data);
-      });
-    axios
-      .get("http://35.153.97.187:8080/teams/" + TeamName)
-      .then((response) => response.data)
-      .then((data) => {
-        setTeamData(data.data[0]);
-        setIsLoaded(true);
-      });
-  }, [isLoaded]);
+    React.useEffect(() => {
+        // axios
+        // .get("http://35.153.97.187:8080/schedule/games")
+        // .then((response) => response.data)
+        // .then((data) => {
+        //     setGames(data.data)
+        // });
+        axios
+        .get(teamapiurl)
+        .then((response) => response.data)
+        .then((data) => {
+            const newdata = data.data
+            console.log(newdata);
+            let num = 0
+            let num2 = 0
+            newdata.forEach((e) => { num += e.iscloser})
+            newdata.forEach((e) => { num2 += e.iscorrect})
+            setcloser(num);
+            setCorrect(num2);
+            setLength(newdata.length)
+            setRawData(data.data)
+            setGames(data.data.reverse())
+        });
+        axios
+        .get('http://35.153.97.187:8080/teams')
+        .then((response) => response.data)
+        .then((data) => {
+            getTeamLogo(data.data)
+        });
+        ;
+        axios
+        .get('http://35.153.97.187:8080/teams/'+TeamName)
+        .then((response) => response.data)
+        .then((data) => {
+            setTeamData(data.data[0])
+            setIsLoaded(true);
+
+        });
+
+    
+    }, [isLoaded]);
+
+    const handleButton1 = () => {
+      let num = 0;
+      rawData.forEach((e)=>{ num += e.iscloser})
+      setcloser(num);
+      setIsOpen(!isOpen);
+  
+    }
+    const handleButton2 = () => {
+      let num = 0;
+      rawData.forEach((e)=>{ num += e.iscorrect})
+      setCorrect(num);
+      setIsOpen(!isOpen);
+  
+    }
 
   return (
     <div className={classes.root}>
@@ -306,58 +336,40 @@ export default function TeamInfo() {
                 image={teamLogo}
                 title="Team Image"
                 /> */}
-          </CardMedia>
-          <CardContent>
-            <Typography paragraph>Rank: {teamData.ranking}</Typography>
-            <Typography paragraph>Wins: {teamData.wins}</Typography>
-            <Typography paragraph>Losses: {teamData.losses}</Typography>
-          </CardContent>
-          <Accordion>
-            <AccordionSummary
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-            >
-              <Avatar src="/broken-image.jpg" />
-              <Typography
-                className={classes.heading}
-                style={{ color: "#00adb5" }}
-              >
-                Picked Team Color
-              </Typography>
-              <Typography className={classes.secondaryHeading}>
-                Score
-              </Typography>
-              <Typography
-                align="right"
-                className={classes.secondHeading}
-                style={{ color: "#000000" }}
-              >
-                Other Team
-              </Typography>
-              <Avatar src="/broken-image.jpg" />
-            </AccordionSummary>
-          </Accordion>
-          {games.map((match) => (
-            <Accordion
-              expanded={expanded === match.time}
-              onChange={handleChange(match.time)}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
-              >
-                <Avatar
-                  alt="Home Team"
-                  variant="rounded"
-                  src={match.homelogo}
-                  className={classes.medium}
-                />
-                <Typography
-                  className={classes.heading}
-                  style={{
-                    color: match.home == match.pick ? "#00adb5" : "#000000",
-                  }}
+                </CardMedia>
+                <CardContent>
+                <Grid container spacing = {3}>
+                  <Grid item xs = {12} md = {7} lg = {5} >
+                    <Typography paragraph variant = "h5" >Rank: {teamData.ranking}</Typography>
+                    <Typography paragraph variant = "h5" >Wins: {teamData.wins}</Typography>
+                    <Typography paragraph variant = "h5" >Losses: {teamData.losses}</Typography>
+                  </Grid>
+                  <Grid item xs = {12} md = {7} lg = {7}>
+                    <Typography> 
+                    {!isOpen && 
+                      <Typography> 
+                      <Button variant="contained" color="primary" size="small" onClick={handleButton2}>
+                          See correct
+                      </Button> 
+                      <PieChart correct = {closer} incorrect = {length - closer} name = 'close' />
+                      </Typography>}
+                    {isOpen && 
+                      <Typography> 
+                      <Button variant="contained" color="primary" size="small" onClick={handleButton1}>
+                          See closer
+                      </Button> 
+                      <PieChart correct = {correct} incorrect = {length - correct} name = 'correct'/>
+                      </Typography>}
+                    
+                    </Typography>
+                  </Grid>
+                </Grid>
+                </CardContent>
+                <Accordion>
+                <AccordionSummary
+
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
                 >
                   {match.home != teamData.school ? (
                     <Link href={"/Teams/" + match.home} color="inherit">
