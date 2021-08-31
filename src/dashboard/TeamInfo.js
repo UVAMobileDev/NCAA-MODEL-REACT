@@ -378,7 +378,7 @@ export default function TeamInfo() {
                   ) : (
                     match.home
                   )}
-                </Typography>
+                {/* </Typography> */}
                 <Typography className={classes.secondaryHeading}>
                   {match.homescore} vs {match.awayscore}
                 </Typography>
