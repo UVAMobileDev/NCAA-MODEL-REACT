@@ -208,13 +208,13 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     axios
-      .get("http://localhost:8080/all")
+      .get("http://35.153.97.187:8080/all")
       .then((response) => response.data)
       .then((data) => {
         findNumberOfCorrectLevels(data.data);
       });
     axios
-      .get("http://localhost:8080/schedule/GamesBySeason/2020")
+      .get("http://35.153.97.187:8080/schedule/GamesBySeason/2020")
       .then((response) => response.data)
       .then((data) => {
         setBarChartData(data.data);

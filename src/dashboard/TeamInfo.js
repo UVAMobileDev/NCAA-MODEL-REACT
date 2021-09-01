@@ -221,6 +221,7 @@ export default function TeamInfo() {
             setLength(newdata.length)
             setRawData(data.data)
             setGames(data.data.reverse())
+            //console.log("the match is " + match)
         });
         axios
         .get('http://35.153.97.187:8080/teams')
@@ -255,6 +256,88 @@ export default function TeamInfo() {
       setIsOpen(!isOpen);
   
     }
+    const accordions = games.map((match) => {
+      return (
+        <Accordion>
+        <AccordionSummary
+
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          
+        <Typography
+          align="left"
+          className={classes.secondHeading}
+          style={{
+            color: match.home == match.pick ? "#00adb5" : "#000000",
+          }}
+        >
+          {match.home != teamData.school ? (
+            <Link href={"/Teams/" + match.home} color="inherit">
+              {match.home}
+            </Link>
+          ) : (
+            match.home
+          )}
+        </Typography>
+        <Typography className={classes.secondaryHeading}>
+          {match.homescore} vs {match.awayscore}
+        </Typography>
+        <Typography
+          align="right"
+          className={classes.secondHeading}
+          style={{
+            color: match.away == match.pick ? "#00adb5" : "#000000",
+          }}
+        >
+          {match.away != teamData.school ? (
+            <Link href={"/Teams/" + match.away} color="inherit">
+              {match.away}
+            </Link>
+          ) : (
+            match.away
+          )}
+        </Typography>
+        <Avatar
+          alt="Away Team"
+          variant="rounded"
+          src={match.awaylogo}
+          className={classes.medium}
+        />
+      </AccordionSummary>
+      <AccordionDetails align="center">
+        <div className={classes.column}>
+          <Typography>
+            Date:{" "}
+            {
+              ((date = new Date(match.time)),
+              date.getDate() +
+                "/" +
+                (date.getMonth() + 1) +
+                "/" +
+                date.getFullYear() +
+                " " +
+                date.getHours() +
+                ":" +
+                date.getMinutes() +
+                ":" +
+                date.getSeconds())
+            }
+          </Typography>
+        </div>
+        <div className={classes.column} align="center">
+          <Typography>Spread: {match.spread}</Typography>
+          <Typography>Actual Score: {match.finalresult}</Typography>
+        </div>
+
+        <div className={classes.column} align="center">
+          <Typography>Value: {match.value}</Typography>
+          <Typography>Level: {match.level}</Typography>
+        </div>
+      </AccordionDetails>
+    </Accordion>
+      );
+    });
 
   return (
     <div className={classes.root}>
@@ -365,77 +448,9 @@ export default function TeamInfo() {
                   </Grid>
                 </Grid>
                 </CardContent>
-                <Accordion>
-                <AccordionSummary
+                {accordions}
 
-                  aria-controls="panel1bh-content"
-                  id="panel1bh-header"
-                >
-                  {match.home != teamData.school ? (
-                    <Link href={"/Teams/" + match.home} color="inherit">
-                      {match.home}
-                    </Link>
-                  ) : (
-                    match.home
-                  )}
-                {/* </Typography> */}
-                <Typography className={classes.secondaryHeading}>
-                  {match.homescore} vs {match.awayscore}
-                </Typography>
-                <Typography
-                  align="right"
-                  className={classes.secondHeading}
-                  style={{
-                    color: match.away == match.pick ? "#00adb5" : "#000000",
-                  }}
-                >
-                  {match.away != teamData.school ? (
-                    <Link href={"/Teams/" + match.away} color="inherit">
-                      {match.away}
-                    </Link>
-                  ) : (
-                    match.away
-                  )}
-                </Typography>
-                <Avatar
-                  alt="Away Team"
-                  variant="rounded"
-                  src={match.awaylogo}
-                  className={classes.medium}
-                />
-              </AccordionSummary>
-              <AccordionDetails align="center">
-                <div className={classes.column}>
-                  <Typography>
-                    Date:{" "}
-                    {
-                      ((date = new Date(match.time)),
-                      date.getDate() +
-                        "/" +
-                        (date.getMonth() + 1) +
-                        "/" +
-                        date.getFullYear() +
-                        " " +
-                        date.getHours() +
-                        ":" +
-                        date.getMinutes() +
-                        ":" +
-                        date.getSeconds())
-                    }
-                  </Typography>
-                </div>
-                <div className={classes.column} align="center">
-                  <Typography>Spread: {match.spread}</Typography>
-                  <Typography>Actual Score: {match.finalresult}</Typography>
-                </div>
-
-                <div className={classes.column} align="center">
-                  <Typography>Value: {match.value}</Typography>
-                  <Typography>Level: {match.level}</Typography>
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          ))}
+            {/* ))} */}
         </Card>
 
         <Container maxWidth="lg" className={classes.container}>
