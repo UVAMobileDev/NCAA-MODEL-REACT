@@ -19,13 +19,13 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
+import { mainListItems, secondaryListItems } from "./components/listItems";
 import { CircularProgress } from "@material-ui/core";
 
-import BarChartGames from "./BarChartGames";
-import Games from "./Games";
-import NumGames from "./NumGames";
-import Copyright from "./Copyright";
+import BarChartGames from "./components/BarChartGames";
+import Games from "./components/Games";
+import NumGames from "./components/NumGames";
+import Copyright from "./components/Copyright";
 import Donut from "./components/Donut.js";
 import {
   PieChart,
@@ -208,7 +208,7 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     axios
-      .get("http://35.153.97.187:8080/all")
+      .get("http://35.153.97.187:8080/schedule/Games")
       .then((response) => response.data)
       .then((data) => {
         findNumberOfCorrectLevels(data.data);
@@ -251,11 +251,11 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer

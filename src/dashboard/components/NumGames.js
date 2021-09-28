@@ -21,18 +21,12 @@ export default function NumGames() {
   }, []);
   return (
     <React.Fragment>
-      <Title>Today's Games</Title>
-      <Typography component="p" variant="h4">
-        {games}
+      <Typography component="p" variant="h4" display="inline">
+        Games Today: {games}
       </Typography>
-      <Typography color="textSecondary" sx={{ flex: 1 }}>
+      <Typography color="textSecondary" display="inline">
         on 06 Feb, 2021
       </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

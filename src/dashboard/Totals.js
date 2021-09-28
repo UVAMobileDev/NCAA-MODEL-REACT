@@ -18,9 +18,9 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import TotalGames from "./TotalGames";
-import Copyright from "./Copyright";
+import { mainListItems, secondaryListItems } from "./components/listItems";
+import TotalGames from "./components/TotalGames";
+import Copyright from "./components/Copyright";
 
 const drawerWidth = 240;
 
@@ -143,11 +143,11 @@ export default function Totals() {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
