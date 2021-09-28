@@ -1,8 +1,17 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 //$ git push -u origin <local-branch>
-import {matchPath, Route, Switch} from "react-router-dom";
-import {Button, Card, CardContent, CardHeader, CardActions, Typography, IconButton, makeStyles } from '@material-ui/core';
+import { matchPath, Route, Switch } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  Typography,
+  IconButton,
+  makeStyles,
+} from "@material-ui/core";
 import clsx from "clsx";
 import Link from "@material-ui/core/Link";
 
@@ -28,23 +37,13 @@ import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import Copyright from "./Copyright";
-import Title from "./Title";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import PieChart from "./PieChart";
+import { mainListItems, secondaryListItems } from "./components/listItems";
+import Copyright from "./components/Copyright";
+import Avatar from "@material-ui/core/Avatar";
+import PieChart from "./components/PieChart";
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {
-    useParams
-  } from "react-router-dom";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { useParams } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -154,6 +153,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     position: "absolute",
   },
+  accordion: {
+    "&:hover": {
+      backgroundColor: "#F1F1EF",
+      color: "#141E3C",
+    },
+  },
 }));
 
 export default function TeamInfo() {
@@ -189,155 +194,154 @@ export default function TeamInfo() {
   let { TeamName } = useParams();
   const preventDefault = (event) => event.preventDefault();
 
-//piechart
-  const [correct,setCorrect] = React.useState(0);
-  const [closer,setcloser] = React.useState(0);
-  const [length,setLength] = React.useState(0);
-  const [isOpen,setIsOpen] = React.useState(false);
-  const [rawData,setRawData] = React.useState([]);
+  //piechart
+  const [correct, setCorrect] = React.useState(0);
+  const [closer, setcloser] = React.useState(0);
+  const [length, setLength] = React.useState(0);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [rawData, setRawData] = React.useState([]);
 
-  var teamapiurl = "http://35.153.97.187:8080/schedule/TeamSchedule/"+TeamName;
+  var teamapiurl =
+    "http://35.153.97.187:8080/schedule/TeamSchedule/" + TeamName;
   var date = "";
 
-    React.useEffect(() => {
-        // axios
-        // .get("http://35.153.97.187:8080/schedule/games")
-        // .then((response) => response.data)
-        // .then((data) => {
-        //     setGames(data.data)
-        // });
-        axios
-        .get(teamapiurl)
-        .then((response) => response.data)
-        .then((data) => {
-            const newdata = data.data
-            console.log(newdata);
-            let num = 0
-            let num2 = 0
-            newdata.forEach((e) => { num += e.iscloser})
-            newdata.forEach((e) => { num2 += e.iscorrect})
-            setcloser(num);
-            setCorrect(num2);
-            setLength(newdata.length)
-            setRawData(data.data)
-            setGames(data.data.reverse())
-            //console.log("the match is " + match)
+  React.useEffect(() => {
+    // axios
+    // .get("http://35.153.97.187:8080/schedule/games")
+    // .then((response) => response.data)
+    // .then((data) => {
+    //     setGames(data.data)
+    // });
+    axios
+      .get(teamapiurl)
+      .then((response) => response.data)
+      .then((data) => {
+        const newdata = data.data;
+
+        let num = 0;
+        let num2 = 0;
+        newdata.forEach((e) => {
+          num += e.iscloser;
         });
-        axios
-        .get('http://35.153.97.187:8080/teams')
-        .then((response) => response.data)
-        .then((data) => {
-            getTeamLogo(data.data)
+        newdata.forEach((e) => {
+          num2 += e.iscorrect;
         });
-        ;
-        axios
-        .get('http://35.153.97.187:8080/teams/'+TeamName)
-        .then((response) => response.data)
-        .then((data) => {
-            setTeamData(data.data[0])
-            setIsLoaded(true);
+        setcloser(num);
+        setCorrect(num2);
+        setLength(newdata.length);
+        setRawData(data.data);
+        setGames(data.data.reverse());
+      });
+    axios
+      .get("http://35.153.97.187:8080/teams")
+      .then((response) => response.data)
+      .then((data) => {
+        getTeamLogo(data.data);
+      });
+    axios
+      .get("http://35.153.97.187:8080/teams/" + TeamName)
+      .then((response) => response.data)
+      .then((data) => {
+        setTeamData(data.data[0]);
+        setIsLoaded(true);
+      });
+  }, [isLoaded]);
 
-        });
-
-    
-    }, [isLoaded]);
-
-    const handleButton1 = () => {
-      let num = 0;
-      rawData.forEach((e)=>{ num += e.iscloser})
-      setcloser(num);
-      setIsOpen(!isOpen);
-  
-    }
-    const handleButton2 = () => {
-      let num = 0;
-      rawData.forEach((e)=>{ num += e.iscorrect})
-      setCorrect(num);
-      setIsOpen(!isOpen);
-  
-    }
-    const accordions = games.map((match) => {
-      return (
-        <Accordion>
-        <AccordionSummary
-
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          
-        <Typography
-          align="left"
-          className={classes.secondHeading}
-          style={{
-            color: match.home == match.pick ? "#00adb5" : "#000000",
-          }}
-        >
-          {match.home != teamData.school ? (
-            <Link href={"/Teams/" + match.home} color="inherit">
-              {match.home}
-            </Link>
-          ) : (
-            match.home
-          )}
-        </Typography>
-        <Typography className={classes.secondaryHeading}>
-          {match.homescore} vs {match.awayscore}
-        </Typography>
-        <Typography
-          align="right"
-          className={classes.secondHeading}
-          style={{
-            color: match.away == match.pick ? "#00adb5" : "#000000",
-          }}
-        >
-          {match.away != teamData.school ? (
-            <Link href={"/Teams/" + match.away} color="inherit">
-              {match.away}
-            </Link>
-          ) : (
-            match.away
-          )}
-        </Typography>
-        <Avatar
-          alt="Away Team"
-          variant="rounded"
-          src={match.awaylogo}
-          className={classes.medium}
-        />
-      </AccordionSummary>
-      <AccordionDetails align="center">
-        <div className={classes.column}>
-          <Typography>
-            Date:{" "}
-            {
-              ((date = new Date(match.time)),
-              date.getDate() +
-                "/" +
-                (date.getMonth() + 1) +
-                "/" +
-                date.getFullYear() +
-                " " +
-                date.getHours() +
-                ":" +
-                date.getMinutes() +
-                ":" +
-                date.getSeconds())
-            }
-          </Typography>
-        </div>
-        <div className={classes.column} align="center">
-          <Typography>Spread: {match.spread}</Typography>
-          <Typography>Actual Score: {match.finalresult}</Typography>
-        </div>
-
-        <div className={classes.column} align="center">
-          <Typography>Value: {match.value}</Typography>
-          <Typography>Level: {match.level}</Typography>
-        </div>
-      </AccordionDetails>
-    </Accordion>
-      );
+  const handleButton1 = () => {
+    let num = 0;
+    rawData.forEach((e) => {
+      num += e.iscloser;
     });
+    setcloser(num);
+    setIsOpen(!isOpen);
+  };
+  const handleButton2 = () => {
+    let num = 0;
+    rawData.forEach((e) => {
+      num += e.iscorrect;
+    });
+    setCorrect(num);
+    setIsOpen(!isOpen);
+  };
+  const accordions = games.map((match) => {
+    return (
+      <Accordion className={classes.accordion}>
+        <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
+          <img src={match.homelogo} width="80" height="100%" />
+          <Typography
+            align="left"
+            className={classes.secondHeading}
+            style={{
+              color: match.home == match.pick ? "#00adb5" : "#000000",
+            }}
+          >
+            {match.home != teamData.school ? (
+              <Link href={"/Teams/" + match.home} color="inherit">
+                {match.home}
+              </Link>
+            ) : (
+              match.home
+            )}
+          </Typography>
+          <Typography className={classes.secondaryHeading}>
+            {match.homescore} vs {match.awayscore}
+          </Typography>
+          <Typography
+            align="right"
+            className={classes.secondHeading}
+            style={{
+              color: match.away == match.pick ? "#00adb5" : "#000000",
+            }}
+          >
+            {match.away != teamData.school ? (
+              <Link href={"/Teams/" + match.away} color="inherit">
+                {match.away}
+              </Link>
+            ) : (
+              match.away
+            )}
+          </Typography>
+          {/* <Avatar
+            alt="Away Team"
+            variant="rounded"
+            src={match.awaylogo}
+            className={classes.medium}
+          /> */}
+          <img src={match.awaylogo} width="80" height="100%" />
+        </AccordionSummary>
+        <AccordionDetails align="center">
+          <div className={classes.column}>
+            <Typography>
+              Date:{" "}
+              {
+                ((date = new Date(match.time)),
+                date.getDate() +
+                  "/" +
+                  (date.getMonth() + 1) +
+                  "/" +
+                  date.getFullYear() +
+                  " " +
+                  date.getHours() +
+                  ":" +
+                  date.getMinutes() +
+                  ":" +
+                  date.getSeconds())
+              }
+            </Typography>
+          </div>
+          <div className={classes.column} align="center">
+            <Typography>Spread: {match.spread}</Typography>
+            <Typography>Actual Score: {match.finalresult}</Typography>
+          </div>
+
+          <div className={classes.column} align="center">
+            <Typography>Value: {match.value}</Typography>
+            <Typography>Level: {match.level}</Typography>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+    );
+  });
 
   return (
     <div className={classes.root}>
@@ -368,11 +372,11 @@ export default function TeamInfo() {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -419,38 +423,65 @@ export default function TeamInfo() {
                 image={teamLogo}
                 title="Team Image"
                 /> */}
-                </CardMedia>
-                <CardContent>
-                <Grid container spacing = {3}>
-                  <Grid item xs = {12} md = {7} lg = {5} >
-                    <Typography paragraph variant = "h5" >Rank: {teamData.ranking}</Typography>
-                    <Typography paragraph variant = "h5" >Wins: {teamData.wins}</Typography>
-                    <Typography paragraph variant = "h5" >Losses: {teamData.losses}</Typography>
-                  </Grid>
-                  <Grid item xs = {12} md = {7} lg = {7}>
-                    <Typography> 
-                    {!isOpen && 
-                      <Typography> 
-                      <Button variant="contained" color="primary" size="small" onClick={handleButton2}>
-                          See correct
-                      </Button> 
-                      <PieChart correct = {closer} incorrect = {length - closer} name = 'close' />
-                      </Typography>}
-                    {isOpen && 
-                      <Typography> 
-                      <Button variant="contained" color="primary" size="small" onClick={handleButton1}>
-                          See closer
-                      </Button> 
-                      <PieChart correct = {correct} incorrect = {length - correct} name = 'correct'/>
-                      </Typography>}
-                    
-                    </Typography>
-                  </Grid>
-                </Grid>
-                </CardContent>
-                {accordions}
+          </CardMedia>
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <Typography variant='h4' align='center'>Rank</Typography>
+                <Typography variant='h3' align='center'>{teamData.ranking}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant='h4' align='center'>Wins</Typography>
+                <Typography variant='h3' align='center'>{teamData.wins}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant='h4' align='center'>Losses</Typography>
+                <Typography variant='h3' align='center'>{teamData.losses}</Typography>
+              </Grid>
 
-            {/* ))} */}
+              <Grid item xs={12} md={7} lg={7}>
+                <Typography>
+                  {!isOpen && (
+                    <Typography>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={handleButton2}
+                      >
+                        See correct
+                      </Button>
+                      <PieChart
+                        correct={closer}
+                        incorrect={length - closer}
+                        name="close"
+                      />
+                    </Typography>
+                  )}
+                  {isOpen && (
+                    <Typography>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={handleButton1}
+                      >
+                        See closer
+                      </Button>
+                      <PieChart
+                        correct={correct}
+                        incorrect={length - correct}
+                        name="correct"
+                      />
+                    </Typography>
+                  )}
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+          {accordions}
+
+          {/* ))} */}
         </Card>
 
         <Container maxWidth="lg" className={classes.container}>

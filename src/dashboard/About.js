@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import PropTypes from 'prop-types';
-import CardMedia from '@material-ui/core/CardMedia';
+import PropTypes from "prop-types";
+import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,15 +17,15 @@ import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import GitHubIcon from '@material-ui/icons/GitHub';
+import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import Copyright from "./Copyright";
-import Title from "./Title";
-import PastGames from "./PastGamesGenerator.js";
-import PastGamesGenerator from "./PastGamesGenerator.js";
+import { mainListItems, secondaryListItems } from "./components/listItems";
+import Copyright from "./components/Copyright";
+import Title from "./components/Title";
+import PastGames from "./components/PastGamesGenerator.js";
+import PastGamesGenerator from "./components/PastGamesGenerator.js";
 
 const drawerWidth = 240;
 
@@ -92,86 +92,86 @@ Group.propTypes = {
 
 const modelDesigners = [
   {
-    name: 'Nadim El-Jaroudi',
-    github: 'nje2494',
-    flag: 'Model Founder',
-    location: 'North Port, Maine, US',
+    name: "Nadim El-Jaroudi",
+    github: "nje2494",
+    flag: "Model Founder",
+    location: "North Port, Maine, US",
   },
   {
-    name: 'Bobby Kearney',
-    github: 'github',
-    flag: 'Model Designer',
-    location: 'Pittsburgh, PA, US',
+    name: "Bobby Kearney",
+    github: "github",
+    flag: "Model Designer",
+    location: "Pittsburgh, PA, US",
   },
   {
-    name: 'Miller Higgins',
-    github: 'github',
-    flag: 'Model Designer',
-    location: 'Washington, DC, US',
-  }
+    name: "Miller Higgins",
+    github: "github",
+    flag: "Model Designer",
+    location: "Washington, DC, US",
+  },
 ];
 const devTeam = [
   {
-    name: 'Nadim El-Jaroudi',
-    github: 'nje2494',
-    flag: 'Team Lead',
-    location: 'Portland, Maine, US',
+    name: "Nadim El-Jaroudi",
+    github: "nje2494",
+    flag: "Team Lead",
+    location: "Portland, Maine, US",
   },
   {
-    name: 'Mingzhe Wu',
-    github: 'MingzheWu418',
-    flag: 'Our Rock',
-    location: 'Somewhere, US',
+    name: "Mingzhe Wu",
+    github: "MingzheWu418",
+    flag: "Our Rock",
+    location: "Somewhere, US",
   },
   {
-    name: 'Emmanuel Edu',
-    github: 'Eziedu',
-    flag: 'Big-Time Baller',
-    location: 'Somewhere, US',
+    name: "Emmanuel Edu",
+    github: "Eziedu",
+    flag: "Big-Time Baller",
+    location: "Somewhere, US",
   },
   {
-    name: 'Jasmine Dogu',
-    github: 'jasminedogu',
-    flag: 'Script Legend',
-    location: 'Somewhere, US',
+    name: "Jasmine Dogu",
+    github: "jasminedogu",
+    flag: "Script Legend",
+    location: "Somewhere, US",
   },
   {
-    name: 'Rudy Schneider',
-    github: 'rudyschneider',
-    flag: 'Dead Weight',
-    location: 'Arlington, Virginia, US',
-  }
+    name: "Rudy Schneider",
+    github: "rudyschneider",
+    flag: "Dead Weight",
+    location: "Arlington, Virginia, US",
+  },
 ];
 const websiteTeam = [
   {
-    name: 'Rudy Schneider',
-    github: 'rudyschneider',
-    flag: 'Team Lead',
-    location: 'Arlington, Virginia, US',
+    name: "Rudy Schneider",
+    github: "rudyschneider",
+    flag: "Team Lead",
+    location: "Arlington, Virginia, US",
   },
   {
-    name: 'Asad Shamsiev',
-    github: 'as-4030',
-    flag: 'Graphs & Logistics',
-    location: 'Somewhere, US',
+    name: "Asad Shamsiev",
+    github: "as-4030",
+    flag: "Graphs & Logistics",
+    location: "Somewhere, US",
   },
   {
-    name: 'William Ngu',
-    github: 'Will-Ngu',
-    flag: 'Page Layout & API Designer',
-    location: 'Richmond, VA, US',
+    name: "William Ngu",
+    github: "Will-Ngu",
+    flag: "Page Layout & API Designer",
+    location: "Richmond, VA, US",
   },
   {
-    name: 'Yanjin Chen',
-    github: 'YanjinChen2023',
-    flag: 'Data Analysis',
-    location: 'Somewhere, US',
+    name: "Yanjin Chen",
+    github: "YanjinChen2023",
+    flag: "Data Analysis",
+    location: "Somewhere, US",
   },
   {
-    name: 'Sebastian Cayo',
-    github: 'Sedba5',
-    flag: 'Script and Database Management',
-    location: 'Somewhere, US',
+    name: "Sebastian Cayo",
+    github: "Sedba5",
+    flag: "Script and Database Management",
+    location: "Somewhere, US",
   },
 ];
 
@@ -183,7 +183,7 @@ const styles = (theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
     margin: theme.spacing(2),
-    borderRadius: '50%',
+    borderRadius: "50%",
     flexShrink: 0,
     backgroundColor: theme.palette.background.default,
   },
@@ -315,11 +315,11 @@ function About(props) {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer

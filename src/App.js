@@ -7,7 +7,7 @@ import ProTip from "./ProTip";
 import Dashboard from "./dashboard/Dashboard";
 import PastGames from "./dashboard/PastGames";
 import UpcomingGames from "./dashboard/UpcomingGames";
-import AllGames from "./dashboard/AllGames";
+import AllGames from "./dashboard/components/AllGames";
 import Totals from "./dashboard/Totals";
 import Stats from "./dashboard/Stats";
 import About from "./dashboard/About";

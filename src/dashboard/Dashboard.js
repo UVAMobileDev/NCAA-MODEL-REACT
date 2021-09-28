@@ -20,17 +20,15 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import BarChartGames from "./BarChartGames";
-import Games from "./Games";
-import NumGames from "./NumGames";
-import Copyright from "./Copyright";
+import { mainListItems, secondaryListItems } from "./components/listItems";
+import BarChartGames from "./components/BarChartGames";
+import Games from "./components/Games";
+import NumGames from "./components/NumGames";
+import Copyright from "./components/Copyright";
 import Donut from "./components/Donut.js";
 import { Button } from "@material-ui/core";
-import NewButton from "./NewButton";
-import NewTab from "./NewTab";
-
-
+import NewButton from "./components/NewButton";
+import NewTab from "./components/NewTab";
 
 const drawerWidth = 240;
 
@@ -109,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 240,
+    height: 100,
   },
 }));
 
@@ -155,11 +153,11 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -184,13 +182,13 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+            {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <NewTab />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
+            <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
                 <NumGames />
               </Paper>
