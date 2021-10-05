@@ -13,8 +13,8 @@ function PieChart(props){
             label: 'prediction result',
             data:[a,b],
             backgroundColor:[
-                'rgba(112, 140, 255, 1)',
-                'rgba(210, 65, 149, 1)'  
+                'rgba(201, 89, 0, 1)',
+                'rgba(0, 0, 127, 1)'  
             ]
         }
         ]

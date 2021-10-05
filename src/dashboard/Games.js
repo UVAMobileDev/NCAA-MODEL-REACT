@@ -1,5 +1,11 @@
 import * as React from "react";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid , 
+  useGridSlotComponentProps, 
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+  } from "@mui/x-data-grid";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -19,39 +25,34 @@ import Header from './Header';
 import PieChart from './PieChart';
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Pagination from '@mui/material/Pagination';
 
 
 const columns = [
-  { field: "home", headerName: "Home", width: 130 },
-  { field: "away", headerName: "Away", width: 130 },
+  { field: "home", headerName: "Home", width: 120 },
+  { field: "away", headerName: "Away", width: 120 },
   {
     field: "spread",
     headerName: "Spread",
     type: "number",
-    width: 100,
-  },
-  {
-    field: "value",
-    headerName: "Value",
-    type: "number",
-    width: 90,
+    width: 130,
   },
   {
     field: "neutral",
     headerName: "Neutral",
     type: "number",
-    width: 100,
+    width: 130,
   },
   {
     field: "difference",
     headerName: "Difference",
     type: "number",
-    width: 105,
+    width: 170,
   },
   {
     field: "pick",
     headerName: "Pick",
-    width: 90,
+    width: 110,
   },
   {
     field: "level",
@@ -59,25 +60,30 @@ const columns = [
     width: 130,
   },
   {
+    field: "final_result",
+    headerName: "Final Result",
+    type:"Number",
+    width: 180
+  },
+  {
     field: "time",
     headerName: "Time",
     width: 200,
   }
-  // {
-  //   field: 'isCorrect',
-  //   headerName: 'IsCorrect',
-  //   type: 'number',
-  //   width: 100,
-  // },
-  // {
-  //   field: 'isCloser',
-  //   headerName: 'Iscloser',
-  //   type: 'number',
-  //   width: 100,
-  // },
+  
 
 ];
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& .super-app-theme--1': {
+      backgroundColor: 'rgba(248, 118, 0, 0.7)',
+    },
+    '& .super-app-theme--0': {
+      backgroundColor: 'rgba(0, 0, 112, 0.6)',
+    },
+
+  },
   button: {
     display: 'block',
     marginTop: theme.spacing(2),
@@ -88,7 +94,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function CustomPagination() {
+  const { state, apiRef } = useGridSlotComponentProps();
+  const classes = useStyles();
 
+  return (
+    <Pagination
+      className={classes.root}
+      color="primary"
+      count={state.pagination.pageCount}
+      page={state.pagination.page + 1}
+      onChange={(event, value) => apiRef.current.setPage(value - 1)}
+    />
+  );
+}
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 export default function Games() {
   const [rowData, setRowData] = React.useState([]);
   const [rawData, setRawData] = React.useState([]);
@@ -101,10 +129,10 @@ export default function Games() {
   
 
   
-  const handleMove = (value,value1,value2,value3) =>{
-      console.log(value,value1,value2,value3);
+  const handleMove = (value,value2,value3) =>{
+      console.log(value,value2,value3);
       let newData = rawData.filter(d => d.spread <= value[1] && d.spread >= value[0] && 
-        d.value <= value1[1] && d.value >=value1[0] && d.neutral <= value2[1] && d.neutral >= value2[0] 
+         d.neutral <= value2[1] && d.neutral >= value2[0] 
         && d.difference <= value3[1] && d.difference >= value3[0] ) ;
       setRowData(newData);
       let num = 0;
@@ -121,6 +149,8 @@ export default function Games() {
     rowData.forEach((e)=>{ num += e.isCloser})
     setcloser(num);
     setIsOpen(!isOpen);
+    setRowData(rowData)
+    
 
   }
   const handleButton2 = () => {
@@ -128,6 +158,7 @@ export default function Games() {
     rowData.forEach((e)=>{ num += e.isCorrect})
     setCorrect(num);
     setIsOpen(!isOpen);
+    setRowData(rowData)
 
   }
 
@@ -147,10 +178,11 @@ export default function Games() {
         let num = 0;
         let num2 = 0;
         newdata.forEach((e)=>{ num += e.isCloser})
-        newdata.forEach((e)=>{num2+= e.isCorrect})
+        newdata.forEach((e)=>{ num2 += e.isCorrect})
         setcloser(num);
         setCorrect(num2);
-        console.log(num,num2)
+        
+        //console.log(num,num2)
         
         
       });
@@ -167,16 +199,6 @@ export default function Games() {
      rawData.forEach((e)=> {spreadMin > e.spread? spreadMin = e.spread : spreadMin = spreadMin});
      spreadMin = Math.floor(spreadMin);
      //console.log(spreadMin);
-
-     let  valueMax= 0;
-     rawData.forEach((e)=> { valueMax < e.value ? valueMax = e.value : valueMax = valueMax});
-     valueMax = Math.floor(valueMax + 1);
-     //console.log(valueMax);
- 
-     let valueMin = 0;
-     rawData.forEach((e)=> {valueMin > e.value? valueMin = e.value : valueMin = valueMin});
-     valueMin = Math.floor(valueMin);
-     //console.log(valueMin);
 
      let  neutralMax= 0;
      rawData.forEach((e)=> { neutralMax < e.neutral ? neutralMax = e.neutral : neutralMax = neutralMax});
@@ -200,7 +222,7 @@ export default function Games() {
     
 
   return (
-    <div>
+    <div >
     <Grid container spacing={3}>
            <Grid item xs={12} md={7} lg={7}>
               {!isOpen && 
@@ -222,15 +244,53 @@ export default function Games() {
       <Grid item xs={12} md={7} lg={5}>
         <Paper>
       <RangeSlider handleMove = {handleMove} a = {spreadMax} b = {spreadMin}
-      c = {valueMax} d = {valueMin} e = {neutralMax} f = {neutralMin} g = {differenceMax} h = {differenceMin}/>
+       e = {neutralMax} f = {neutralMin} g = {differenceMax} h = {differenceMin}/>
         </Paper>
       </Grid>
       </Grid>
-      {isLoaded ? <DataGrid rows={rowData} columns={columns} getRowId ={(rowData) => rowData.home} autoHeight={true} /> :
-      <CircularProgress />}
+      {isLoaded && isOpen && <DataGrid 
+        className = {classes.root}
+        pagination
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+        components={{
+          Pagination: CustomPagination,
+        }} 
+        rows={rowData} 
+        columns={columns} 
+        getRowId ={(rowData) => rowData.difference.toString()} 
+        autoHeight={true}
+        getRowClassName={(params) =>
+          `super-app-theme--${params.getValue(params.id, 'isCorrect')}`
+        }
+        laoding = {true}
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+        /> }
+      {isLoaded && !isOpen && <DataGrid 
+        className = {classes.root}
+        pagination
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+        components={{
+          Pagination: CustomPagination,
+        }} 
+        rows={rowData} 
+        columns={columns} 
+        getRowId ={(rowData) => rowData.difference.toString()} 
+        autoHeight={true}
+        getRowClassName={(params) =>
+          `super-app-theme--${params.getValue(params.id, 'isCloser')}`
+        }
+        laoding = {true}
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+        /> }
+        
+      {!isLoaded && <CircularProgress />}
       
     </div>
   );
 }
-
-

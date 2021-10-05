@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import NewButton from './NewButton';
 import Chips from './Chips';
 import PieChart from './PieChart';
+import ImageGallery from 'react-image-gallery'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,6 +51,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const images = [
+  {
+    original: 'https://picsum.photos/id/1018/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1018/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1015/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1015/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1019/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1019/250/150/',
+  },
+];
+
 export default function NewTab() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -68,8 +84,7 @@ export default function NewTab() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <NewButton />
-        Upload a picture for your team
+        <ImageGallery items={images} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Chips />

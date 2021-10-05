@@ -16,16 +16,14 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
+export default function RangeSlider({handleMove,a,b,e,f,g,h}) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState([-100, 100]);
-  const [value1, setValue1] = React.useState([-100, 100]);
   const [value2, setValue2] = React.useState([-100, 100]);
   const [value3, setValue3] = React.useState([-100, 100]);
   
   const [open, setOpen] = React.useState(false);
-  const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
   
@@ -33,11 +31,6 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
       
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    //handleMove(value,value1,value2,value3);
-   
-  };
-  const handleChange1 = (event, newValue) => {
-    setValue1(newValue);
     //handleMove(value,value1,value2,value3);
    
   };
@@ -58,11 +51,6 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
     //handleMove(value,value1,value2,value3);
     setOpen(!open);
   }
-  const handleReset1 = () =>{
-    setValue1([d,c]);
-    //handleMove(value,value1,value2,value3);
-    setOpen1(!open1);
-  }
   const handleReset2 = () =>{
     setValue2([f,e]);
     //handleMove(value,value1,value2,value3);
@@ -75,7 +63,7 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
     setOpen3(!open3);
   }
   const handleApply = () =>{
-    handleMove(value,value1,value2,value3);
+    handleMove(value,value2,value3);
   }
 
   
@@ -107,25 +95,7 @@ export default function RangeSlider({handleMove,a,b,c,d,e,f,g,h}) {
         aria-labelledby="range-slider"
         getAriaValueText={valuetext}
       />}
-      <Typography id="range-slider" gutterBottom>
-         Value range
-      </Typography>
-      {!open1 && <Button variant="contained" color="primary" size="small" onClick={() => {handleReset1()}}>
-        Open
-      </Button>}
-      {open1 && <Button variant="contained" color="secondary" size="small" onClick={() => {handleReset1()}}>
-        Close
-      </Button>}
-      {open1 && <Slider
-        min = {d}
-        max = {c}
-        step = {0.5}
-        value={value1}
-        onChange={handleChange1}
-        valueLabelDisplay="auto"
-        aria-labelledby="range-slider"
-        getAriaValueText={valuetext}
-      />}
+      
       <Typography id="range-slider" gutterBottom>
          Neutral range
       </Typography>

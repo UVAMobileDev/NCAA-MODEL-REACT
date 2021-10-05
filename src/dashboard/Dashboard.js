@@ -29,10 +29,26 @@ import Donut from "./components/Donut.js";
 import { Button } from "@material-ui/core";
 import NewButton from "./NewButton";
 import NewTab from "./NewTab";
-
+import ImageGallery from 'react-image-gallery'
+import Gallery from './Gallery'
 
 
 const drawerWidth = 240;
+
+const images = [
+  {
+   // original: 'https://picsum.photos/id/1018/1000/600/',
+    original: 'https://picsum.photos/id/1018/250/150/',
+  },
+  {
+   // original: 'https://picsum.photos/id/1015/1000/600/',
+    original: 'https://picsum.photos/id/1015/250/150/',
+  },
+  {
+   // original: 'https://picsum.photos/id/1019/1000/600/',
+    original: 'https://picsum.photos/id/1019/250/150/',
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -186,7 +202,8 @@ export default function Dashboard() {
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <NewTab />
+                
+                <Gallery />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
