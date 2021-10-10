@@ -30,7 +30,25 @@ import { Button } from "@material-ui/core";
 import NewButton from "./components/NewButton";
 import NewTab from "./components/NewTab";
 
+import ImageGallery from "react-image-gallery";
+import Gallery from "./components/Gallery";
+
 const drawerWidth = 240;
+
+const images = [
+  {
+    // original: 'https://picsum.photos/id/1018/1000/600/',
+    original: "https://picsum.photos/id/1018/250/150/",
+  },
+  {
+    // original: 'https://picsum.photos/id/1015/1000/600/',
+    original: "https://picsum.photos/id/1015/250/150/",
+  },
+  {
+    // original: 'https://picsum.photos/id/1019/1000/600/',
+    original: "https://picsum.photos/id/1019/250/150/",
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 100,
+    height: 240,
   },
 }));
 
@@ -153,11 +171,11 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
-          {/* <IconButton color="inherit">
+          <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton> */}
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -182,13 +200,13 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <NewTab />
+                <Gallery />
               </Paper>
-            </Grid> */}
+            </Grid>
             {/* Recent Deposits */}
-            <Grid item xs={12}>
+            <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <NumGames />
               </Paper>
