@@ -159,6 +159,11 @@ const useStyles = makeStyles((theme) => ({
       color: "#141E3C",
     },
   },
+  aligncenter: {
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 }));
 
 export default function TeamInfo() {
@@ -408,38 +413,14 @@ export default function TeamInfo() {
                     aspectRatio={(16/9)}
                     disableSpinner
                 /> */}
-          <CardMedia
-          // className={classes.media}
-          // height="140"
-          // image={teamLogo}
-          // title="Paella dish"
-          >
-            {/* <Image src={teamLogo} className={classes.logo} style={width='12%'}/> */}
-            <Paper variant="outlined">
-              <img src={teamLogo} />
-            </Paper>
-            {/* <CardMedia
-                className={classes.media}
-                image={teamLogo}
-                title="Team Image"
-                /> */}
-          </CardMedia>
-          <CardContent>
+          {/* <Image src={teamLogo} className={classes.logo} style={width='12%'}/> */}
+          <Paper variant="outlined">
             <Grid container spacing={3}>
-              <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Rank</Typography>
-                <Typography variant='h3' align='center'>{teamData.ranking}</Typography>
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Wins</Typography>
-                <Typography variant='h3' align='center'>{teamData.wins}</Typography>
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Losses</Typography>
-                <Typography variant='h3' align='center'>{teamData.losses}</Typography>
+              <Grid item xs={6}>
+                <img src={teamLogo} height={"50%"} />
               </Grid>
 
-              <Grid item xs={12} md={7} lg={7}>
+              <Grid item xs={6}>
                 <Typography>
                   {!isOpen && (
                     <Typography>
@@ -475,6 +456,34 @@ export default function TeamInfo() {
                       />
                     </Typography>
                   )}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <Typography variant="h4" align="center">
+                  Rank
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.ranking}
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="h4" align="center">
+                  Wins
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.wins}
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="h4" align="center">
+                  Losses
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.losses}
                 </Typography>
               </Grid>
             </Grid>

@@ -19,8 +19,11 @@ import Collapse from "@material-ui/core/Collapse";
 import axios from "axios";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { useHistory } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import { createTheme } from "@mui/material/styles";
+
+import Box from "@mui/material/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +45,14 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  palette: {
+    primary: {
+      light: "#757ce8",
+      main: "#3f50b5",
+      dark: "#001111",
+      contrastText: "#fff",
+    },
   },
   card: {
     "&:hover": {
@@ -87,13 +98,27 @@ export default function TeamCard({ cardInfo }) {
                         <FavoriteIcon />
                     </IconButton> */}
         <img src={cardInfo.logoURL} />
-        <CardHeader
-          title={cardInfo.team_name}
-          subheader={
-            cardInfo.abbr.three_letter + "/" + cardInfo.abbr.four_letter
-          }
+        <Box
+          cursor="pointer"
+          borderRadius={4}
+          sx={{
+            backgroundColor: "#dddddd",
+            "&:hover": {
+              backgroundColor: "primary.main",
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
           onClick={() => history.push(`Teams/${cardInfo.team_name}`)}
-        />
+        >
+          <CardHeader
+            cursor="pointer"
+            title={cardInfo.team_name}
+            subheader={
+              cardInfo.abbr.three_letter + "/" + cardInfo.abbr.four_letter
+            }
+          />
+        </Box>
+
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -110,16 +135,28 @@ export default function TeamCard({ cardInfo }) {
           <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Rank</Typography>
-                <Typography variant='h3' align='center'>{teamData.ranking}</Typography>
+                <Typography variant="h4" align="center">
+                  Rank
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.ranking}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Wins</Typography>
-                <Typography variant='h3' align='center'>{teamData.wins}</Typography>
+                <Typography variant="h4" align="center">
+                  Wins
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.wins}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant='h4' align='center'>Losses</Typography>
-                <Typography variant='h3' align='center'>{teamData.losses}</Typography>
+                <Typography variant="h4" align="center">
+                  Losses
+                </Typography>
+                <Typography variant="h3" align="center">
+                  {teamData.losses}
+                </Typography>
               </Grid>
             </Grid>
           </Container>
@@ -130,8 +167,6 @@ export default function TeamCard({ cardInfo }) {
           >
             Learn More
           </Button>
-          
-          
         </CardContent>
       </Collapse>
       {/* </CardActionArea> */}

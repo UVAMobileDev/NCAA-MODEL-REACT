@@ -17,6 +17,7 @@ import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import Chip from "@mui/material/Chip";
 import { mainListItems, secondaryListItems } from "./components/listItems";
 
 import TeamCard from "./components/TeamCard";
